@@ -17,7 +17,7 @@ end
 class User < Struct.new(:name, :email); end
 
 admin = User.new()
-admin.name = "Eduardo Mello"
+admin.name = "Eduardo Mattos da Silva Mello"
 admin.email = "emsmello@gmail.com"
 json = JSON.pretty_generate(admin)
 puts json
