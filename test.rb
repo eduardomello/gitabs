@@ -18,7 +18,7 @@ class User < Struct.new(:name, :email); end
 
 admin = User.new()
 admin.name = "Eduardo Mello"
-admin.email = "emsmello@gmai.com"
+admin.email = "emsmello@gmail.com"
 json = JSON.pretty_generate(admin)
 puts json
 repo = MiniGit.new()
@@ -31,11 +31,11 @@ File.open(filename, 'w') do |jsonFile|
 end
 
 puts repo.add(filename)
-puts repo.commit(:m => filename + 'updated')
+puts repo.commit(:m => filename + ' updated')
 
 #log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 
-puts repo.log({:pretty => "format:'5h %ad | %s%d [%an]'", :graph => true, :date => short})
+puts repo.log({:pretty => "format:'5h %ad | %s%d [%an]'", :graph => true, :date => 'short'})
 
 
 repo.checkout('json-tests')
