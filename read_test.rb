@@ -17,6 +17,21 @@ end
 class User < Struct.new(:name, :email); end
 
 repo = MiniGit.new()
+repo.checkout('data')
+
+currentJson = File.read('User_emsmello@gmail.com')
+
+
+data = JSON.parse(currentJson)
+
+
+
+admin = User.new
+admin.name = data["name"]
+admin.email = data["email"]
+
+puts admin.name
+
 repo.checkout('a985153')
 
 oldJson = File.read('User_emsmello@gmail.com')

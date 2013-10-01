@@ -26,7 +26,9 @@ data = JSON.parse(oldJson)
 
 
 
-admin = User.new (data["name"], data["email"])
+admin = User.new
+admin.name = data["name"]
+admin.email = data["email"]
 
 puts admin.name
 
