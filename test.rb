@@ -2,6 +2,18 @@ require 'json'
 require 'json/add/core'
 require 'minigit'
 
+class Struct
+  def to_map
+    map = Hash.new
+    self.members.each { |m| map[m] = self[m] }
+    map
+  end
+
+  def to_json(*a)
+    to_map.to_json(*a)
+  end
+end
+
 class User < Struct.new(:name, :email); end
 
 admin = User.new()
@@ -15,4 +27,7 @@ repo.checkout 'data'
 File.open(admin.class.name + '_' + admin.email, 'w') do |jsonFile|
         jsonFile.write(json)
 end
+
+puts repo.add(filename)
+puts repo.commit(:m => filename + 'updated')
 
