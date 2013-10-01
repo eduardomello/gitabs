@@ -35,7 +35,7 @@ puts repo.commit(:m => filename + ' updated')
 
 #log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 
-puts repo.log({:pretty => "format:'5h %ad | %s%d [%an]'", :graph => true, :date => 'short'})
+puts repo.log({:pretty => "format:'%h %ad | %s%d [%an]'", :graph => true, :date => 'short'})
 
 
 repo.checkout('json-tests')
