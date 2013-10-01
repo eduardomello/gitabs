@@ -26,7 +26,7 @@ data = JSON.parse(oldJson)
 
 
 
-admin = data.map {|u| User.new(u["name"], u"[email]")}
+admin = User.new (data["name"], data["email"])
 
 puts admin.name
 
