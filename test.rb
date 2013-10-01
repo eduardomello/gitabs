@@ -24,7 +24,9 @@ puts json
 repo = MiniGit.new()
 repo.checkout 'data'
 
-File.open(admin.class.name + '_' + admin.email, 'w') do |jsonFile|
+filename = admin.class.name + '_' + admin.email
+
+File.open(filename, 'w') do |jsonFile|
         jsonFile.write(json)
 end
 
