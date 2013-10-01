@@ -24,10 +24,10 @@ oldJson = File.read('User_emsmello@gmail.com')
 
 data = JSON.parse(oldJson)
 
-puts data
 
-#admin = data.map {|u| User.new(u.name, u.email)}
 
-#puts admin
+admin = data.map {|u| User.new(u["name"], u"[email]")}
+
+puts admin.name
 
 repo.checkout('json-tests')

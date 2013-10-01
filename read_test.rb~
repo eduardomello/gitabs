@@ -19,12 +19,15 @@ class User < Struct.new(:name, :email); end
 repo = MiniGit.new()
 repo.checkout('a985153')
 
-oldJson = File.open('User_emsmello@gmail.com', 'r')
+oldJson = File.read('User_emsmello@gmail.com')
 
-data = JSON.parde(oldjson)
 
-admin = data.map {|u| User.new(u.name, u.email)}
+data = JSON.parse(oldJson)
 
-puts admin
+
+
+admin = data.map {|u| User.new(u["name"], u."[email]")}
+
+puts admin.name
 
 repo.checkout('json-tests')
