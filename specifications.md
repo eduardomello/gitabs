@@ -1,21 +1,19 @@
 # GITABLEAU
 
-Gitableau is a git abstraction to use it as a temporal database.
-It uses different branches to group similiar data. Each branch has a different default schema that can hange through time.
-All data is stored in JSON files.
+Every project has a external universe that tells a lot about what it does and what it should do. That can be bugs on a bug tracker, tasks on a project management system, specifications on a Word Document. You name it. That forces people involved in the project to use a different number of systems to support that need. But, what if all that data would be kept along with the project?
 
-## Objective
+Gitableau creates an enviroment for storing all that external data along with a certain repository. 
+It uses different branches to group similiar data, called meta-branches. Each branch has a different default schema that can change through time. All data is stored in JSON files. 
 
-- To backup time sensitive applications.
-- To add meta-data to actual commit files.
+Gitableau is a blank slate. Through the use of templates, you can determine how you're going to store your external data.
 
-## Basic structure
+All git operations are still available but you can relate them to specific data on your meta-branches.
 
-Gitableau will have a simple interface to create different data models using JSON and Ruby.
-Gitableau will have templates for common repository.
+Gitableau has a REST API so you can build your own application to deal with its data.
 
 
-### Commands
+### To-do list
+
 
 - Create data model
 - Create data file
@@ -27,5 +25,6 @@ Gitableau will have templates for common repository.
 ### Resources
 
 Gitableau uses MiniGit to run git commands.
+
 
  
