@@ -5,6 +5,7 @@
 		"content": "As an [actor] I want [action] so that [achievement]",
 		"status": "(todo|doing|done)",
 		"effort": "(?|2|4|8)",
+		"spent": "[time]",
 		"acceptance_criteria":
 		[
 			{ "criteria": "[some criteria]", "status": "(not tested|not accepted|accepted)" }
