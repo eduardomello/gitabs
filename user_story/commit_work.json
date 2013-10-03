@@ -2,7 +2,7 @@
 	"story" : 
 	{
 		"title": "Commit work",
-		"content": "As a colaborator I want to commit work so that my progress is known to the others",
+		"content": "As a colaborator I want to commit work so that my progress is known to others",
 		"status": "todo",
 		"effort": "?",
 		"acceptance_criteria":

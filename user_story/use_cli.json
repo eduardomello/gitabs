@@ -1,0 +1,15 @@
+{
+	"story" : 
+	{
+		"title": "Use command line interface",
+		"content": "As a user I want to have a set of operations available on command line so that i can operate gitabs",
+		"status": "todo",
+		"effort": "?",
+		"acceptance_criteria":
+		[
+			{ "criteria": "Gitabs available on command line", "status": "not tested" }
+		]
+			
+	}	
+	
+}
