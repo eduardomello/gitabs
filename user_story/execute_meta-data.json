@@ -1,0 +1,17 @@
+{
+	"story" : 
+	{
+		"title": "Execute meta-data",
+		"content": "As an colaborator I want checkout a meta-data so that work and deliver what is expected",
+		"status": "todo",
+		"effort": "?",
+		"acceptance_criteria":
+		[
+			{ "criteria": "A new branch must be created", "status": "not tested" }
+			{ "criteria": "This branch must be branched out of meta-branch HEAD", "status": "not tested" }
+			{ "criteria": "This branch must have tree from predefined workspace", "status": "not tested" }
+		]
+			
+	}	
+	
+}

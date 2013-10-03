@@ -1,0 +1,16 @@
+{
+	"story" : 
+	{
+		"title": "Create blank repository",
+		"content": "As a project manager I want to create a blank repository so that i can start modeling the meta-data on it",
+		"status": "todo",
+		"effort": "?",
+		"acceptance_criteria":
+		[
+			{ "criteria": "create directory", "status": "not tested" }
+			{ "criteria": "initiate git repository on created directory", "status": "not tested" }
+		]
+			
+	}	
+	
+}

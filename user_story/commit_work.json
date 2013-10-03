@@ -1,0 +1,15 @@
+{
+	"story" : 
+	{
+		"title": "Commit work",
+		"content": "As a colaborator I want to commit work so that my progress is known to the others",
+		"status": "todo",
+		"effort": "?",
+		"acceptance_criteria":
+		[
+			{ "criteria": "A new commit is created on related breanch", "status": "not tested" }
+		]
+			
+	}	
+	
+}

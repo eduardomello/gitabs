@@ -1,4 +1,4 @@
-# GITABLEAU
+# GITABS
 
 Every project has a external universe that tells a lot about what it does and what it should do. That can be bugs on a bug tracker, tasks on a project management system, specifications on a Word Document. You name it. That forces people involved in the project to use a different number of systems to support that need. But, what if all that data would be kept along with the project?
 

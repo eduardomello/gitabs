@@ -1,0 +1,16 @@
+{
+	"story" : 
+	{
+		"title": "Create meta-branch",
+		"content": "As a project manager I want create an orphan meta-branch on some repository so i can start storing meta-data on it with no relation to a prior commit",
+		"status": "todo",
+		"effort": "?",
+		"acceptance_criteria":
+		[
+			{ "criteria": "New branch with empty tree", "status": "not tested" }
+			{ "criteria": "This new branch can't have a parent reference", "status": "not tested" }
+		]
+			
+	}	
+	
+}

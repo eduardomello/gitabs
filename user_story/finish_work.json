@@ -1,0 +1,18 @@
+{
+	"story" : 
+	{
+		"title": "Finish work",
+		"content": "As a colaborator I want to commit a final version of my work so that my progress is merged to the workspace and meta-data is updated",
+		"status": "todo",
+		"effort": "?",
+		"acceptance_criteria":
+		[
+			{ "criteria": "A new commit is created", "status": "not tested" }
+			{ "criteria": "Work branch is merged into predefined workspace", "status": "not tested" }
+			{ "criteria": "Work branch must be merge into meta-data branch with an empty-tree", "status": "not tested" }
+			
+		]
+			
+	}	
+	
+}

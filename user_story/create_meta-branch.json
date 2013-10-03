@@ -1,0 +1,15 @@
+{
+	"story" : 
+	{
+		"title": "Create meta-branch",
+		"content": "As a project manager I want create a meta-branch on some repository so i can start storing meta-data on it",
+		"status": "todo",
+		"effort": "?",
+		"acceptance_criteria":
+		[
+			{ "criteria": "New branch with empty tree", "status": "not tested" }
+		]
+			
+	}	
+	
+}

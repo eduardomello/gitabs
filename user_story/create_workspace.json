@@ -1,0 +1,15 @@
+{
+	"story" : 
+	{
+		"title": "Create workspace",
+		"content": "As a project manager I want to create branches as workspaces so that colaborators can have somewhere to commit their work",
+		"status": "todo",
+		"effort": "?",
+		"acceptance_criteria":
+		[
+			{ "criteria": "A branch without template must be created", "status": "not tested" }
+		]
+			
+	}	
+	
+}
