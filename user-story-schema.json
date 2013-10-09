@@ -1,0 +1,47 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "User Story",
+    "description": "A User Story",
+    "type": "object",
+    "properties": {
+		  	"title": {
+		  		"description": "A significant title",
+		  		"type": "string"
+		  	},
+		  	"content": {
+		  		"description": "As an [actor] I want [action] so that [achievement]",
+		  		"type": "string"
+		  	},
+		  	"status": {
+		  		"enum": ["todo","doing","done"]
+		  	},
+		  	"effort": {
+		  		"description": "total effort time for getting user story done",
+		  		"type": "integer",
+		  		"minimum": 0,
+		  		"maximum": 8
+		  	},
+		  	"spent": {
+		  		"description": "time already spent on user story",
+		  		"type": "integer",
+		  		"minimum": 0,
+		  		"maximum": 8
+		  	},
+		  	"acceptance_criteria":
+		  	{
+		  		"type": "array",
+		  		"items": {
+		  			"type": "object",
+		  			"properties": {
+		  				"criteria" : { "description": "some criteria", "type": "string"},
+		  				"status" : { "enum":["not tested", "working"]}
+		  			}
+		  		},
+		  		"minItems": 1,
+		  		"uniqueItems": true
+		  		
+		  	}    
+    },
+    "required": ["title", "content", "status", "effort", "acceptance_criteria"]
+    
+}
