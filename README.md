@@ -19,9 +19,12 @@ In gitabs, every repository can have its own format of meta-data. Using json-sch
 
 Any type of o meta-data schema results on a branch named after its schema. Git provides that history of changes is correctly maintened.
 
+
 ### Searching meta-data
 
 Gitabs will have a interface to query data from its meta-branches. It's actual functionality is not fully defined but I'm thinking of using git grep and Rugged Walker.
+=======
+
 
 ### Workspaces
 
@@ -39,6 +42,7 @@ Gitabs will have a REST API in order to build different interfaces with it.
 ## Development
 
 Development uses Ruby. After some weeks of initial researches I settled on a set of gems I will be using to get it done:
+
 
 - Rugged: https://github.com/libgit2/rugged
 - Minigit: https://github.com/3ofcoins/minigit
