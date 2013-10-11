@@ -23,7 +23,6 @@ Any type of o meta-data schema results on a branch named after its schema. Git p
 ### Searching meta-data
 
 Gitabs will have a interface to query data from its meta-branches. It's actual functionality is not fully defined but I'm thinking of using git grep and Rugged Walker.
-=======
 
 
 ### Workspaces
