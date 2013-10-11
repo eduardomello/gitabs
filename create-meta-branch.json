@@ -2,11 +2,16 @@
 	{
 		"title": "Create meta-branch",
 		"content": "As a project manager I want create a meta-branch on some repository so i can start storing meta-data on it",
-		"status": "todo",
-		"effort": 0,
+		"status": "doing",
+		"effort": 5,
 		"acceptance_criteria":
 		[
-			{ "criteria": "New branch with empty tree", "status": "not tested" }
+			{ "criteria": "Be able to run 'git tabs meta-branch'", "status": "not tested" },
+			{ "criteria": "'git tabs meta-branch' need a json-schema file as parameter", "status": "not tested" },
+			{ "criteria": "json-schema file must be valid", "status": "not tested" },
+			{ "criteria": "New branch named after json-schema file must be added", "status": "not tested" },
+			{ "criteria": "New branch must have a single file: the json-schema file", "status": "not tested" },
+			{ "criteria": "Commit the new file to the branch", "status": "not tested" }
 		]
 			
 	}	
