@@ -1,0 +1,15 @@
+	{
+		"title": "Add meta-data",
+		"content": "As a general user I want to add meta-data on a branch so i can register different activities of a project",
+		"status": "todo",
+		"effort": 5,
+		"acceptance_criteria":
+		[
+			{ "criteria": "Be able to run 'git tabs meta-data -a'", "status": "not tested" },
+			{ "criteria": "'git tabs meta-data -a' need a meta-branch parameter", "status": "not tested" },
+			{ "criteria": "shell must query user for each field on json-schema", "status": "not tested" },
+			{ "criteria": "Valid json file must be added to meta-branch", "status": "not tested" },
+			{ "criteria": "Commit the new file to the branch", "status": "not tested" }
+		]
+			
+	}	
