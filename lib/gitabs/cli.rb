@@ -7,5 +7,4 @@ class Gitabs::CLI < Thor
 		#do stuff
 	end
 
-
 end

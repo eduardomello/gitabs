@@ -1,14 +1,23 @@
+$:.push File.expand_path("../lib", __FILE__)
+require "gitabs/version"
+
 Gem::Specification.new do |s|
+
   s.name        = 'gitabs'
-  s.version     = '0.0.0'
+  s.version     = Gitabs::VERSION
   s.date        = '2013-10-11'
   s.summary     = "Gitabs is a git extension"
   s.description = "Gitabs extends your git repository to the real world"
   s.authors     = ["Eduardo Mello"]
-  s.email       = 'eduardo@bonaparte.ag'
-  s.files       = ["lib/gitabs.rb"]
+  s.email       = 'eduardo@bonaparte.ag'  
   s.homepage    = 'http://www.github.com/eduardomello/gitabs'
 	s.license     = 'MIT'
+	
+	s.files         = `git ls-files`.split("\n")
+  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.require_paths = ["lib"]
   
   s.add_runtime_dependency 'thor'
+  
 end
