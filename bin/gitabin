@@ -1,7 +1,0 @@
-#!/usr/bin/env ruby
-
-
-require "gitabs"
-
-
-#Gitabs::CLI.start
