@@ -47,7 +47,9 @@ Development uses Ruby. After some weeks of initial researches I settled on a set
 - Minigit: https://github.com/3ofcoins/minigit
 - Thor: https://github.com/erikhuda/thor
 - Sinatra: https://github.com/sinatra/sinatra/
-- RSpec: http://rspec.info/
+- Minitest: https://github.com/seattlerb/minitest
+- Ruby JSON Schema Validator: https://github.com/hoxworth/json-schema
+
 
 I'm using the concept of gitabs to guide my development. For that I created a branch called user_story which stores user stories that I've written for the project. Based on these Stories I will be using TDD throughout the development process.
 

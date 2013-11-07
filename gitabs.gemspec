@@ -11,13 +11,20 @@ Gem::Specification.new do |s|
   s.authors     = ["Eduardo Mello"]
   s.email       = 'eduardo@bonaparte.ag'  
   s.homepage    = 'http://www.github.com/eduardomello/gitabs'
-	s.license     = 'MIT'
+  s.license     = 'MIT'
 	
-	s.files         = `git ls-files`.split("\n")
+  s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
-  
+
+  s.add_development_dependency "guard-minitest"
+  s.add_development_dependency "rake"  
+
   s.add_runtime_dependency 'thor'
+  s.add_runtime_dependency 'json'
+  s.add_runtime_dependency 'json-schema'
+  s.add_runtime_dependency 'rugged'
+
   
 end
