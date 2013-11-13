@@ -10,7 +10,7 @@ module Gitabs
 				# For now, it's just validating if its a valid JSON file. 
 				begin
 					JSON.parse(file)
-				rescue
+				rescue				
 					false
 				end
 				true

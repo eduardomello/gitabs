@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.summary     = "Gitabs is a git extension"
   s.description = "Gitabs extends your git repository to the real world"
   s.authors     = ["Eduardo Mello"]
-  s.email       = 'eduardo@bonaparte.ag'  
+  s.email       = 'emsmello@gmail.com'  
   s.homepage    = 'http://www.github.com/eduardomello/gitabs'
   s.license     = 'MIT'
 	
