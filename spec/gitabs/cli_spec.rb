@@ -25,19 +25,20 @@ describe Gitabs::CLI do
 			out.must_match /.*Invalid JSON file.*/ 
 		end
 				
-		describe "with valid json-schema file" do
-			before do
-				repo = Rugged::Repository.new('./')
-			end
-			it "should create a new branch on repository" do
-				
-			end
-			
-			it "should commit json-schema file to new branch" do
-			
-			end
-		
-		end
+#		describe "with valid json-schema file" do
+#			before do
+#				any_instance_of()
+#			end		
+#				
+#			it "should create a new branch on repository" do
+#				
+#			end
+#			
+#			it "should commit json-schema file to new branch" do
+#			
+#			end
+#		
+#		end
 		
 		
 	end
