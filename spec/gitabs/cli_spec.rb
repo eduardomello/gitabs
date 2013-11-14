@@ -10,17 +10,18 @@ describe Gitabs::CLI do
 		describe "should verify arguments" do
 			it "should ask for a argument" do
 				out = capture_io{ Gitabs::CLI.start ['metabranch'] }.join ''
-			    out.must_match /.*metabranch was called with no arguments.*/
+			    out.must_match /.*ERROR.*/
 			end			
 		
 			it "it should ask for a second argument" do
-			
+				out = capture_io{ Gitabs::CLI.start ['metabranch', 'new-branch'] }.join ''
+				out.must_match /.*ERROR.*/
 			end
 		
 		end
 		
 		it "should reject invalid json files" do
-			out = capture_io{ Gitabs::CLI.start ['metabranch', 'assets/json/invalid.json']}.join ''
+			out = capture_io{ Gitabs::CLI.start ['metabranch', 'new-branch', 'assets/json/invalid.json']}.join ''
 			out.must_match /.*Invalid JSON file.*/ 
 		end
 				
