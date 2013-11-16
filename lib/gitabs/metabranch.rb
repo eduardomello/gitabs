@@ -9,7 +9,10 @@ module Gitabs
 		attr_accessor :name
 		attr_accessor :file
 		
-		attr_accessor :branch
+		attr_accessor :branch #Rugged::Reference
+		attr_accessor :head #Rugged::Commit
+		
+		
 	
 		def initialize(name=nil, file=nil)
 			@name = name
@@ -19,8 +22,9 @@ module Gitabs
 	
 		def load
 			#lookup if repo exists
-			branch = Rugged::Branch.lookup(Gitabs.repo, @name)
-			Gitabs.repo.create_branch(@name) if branch == nil			
+			@branch = Gitabs.repo.lookup(@name)
+			@branch = Gitabs.repo.create_branch(@name) if @branch == nil	
+			@head = Gitabs.repo.lookup(@branch.target)		
 		end
 		
 		def valid?
