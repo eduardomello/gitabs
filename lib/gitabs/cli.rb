@@ -1,4 +1,5 @@
 require 'gitabs'
+require 'gitabs/metabranch'
 require 'thor'
 
 class Gitabs::CLI < Thor
@@ -17,7 +18,7 @@ class Gitabs::CLI < Thor
 		
 		if options[:file] then
 			mb = Gitabs::Metabranch.new(name, options[:file])
-			error "Invalid JSON file" unless mb.valid?
+			error "Invalid JSON-Schema" unless mb.valid?
 			puts "Metabranch created"
 		elsif options[:size] then
 			puts "0 metadata records"			

@@ -1,4 +1,23 @@
+
 Feature: Project Manager creates a meta-branch
+
+	Before do
+		require 'tmpdir'
+  		@directory = Dir.mktmpdir('temp-repo')
+		@orig_directory = Dir.pwd
+		Dir.chdir(@directory)
+		capture_io {
+			`git init`
+			`touch dummy`
+			`git add .`
+			`git commit -m 'dummy commit'`		
+		}
+	end
+	
+	After do
+		Dir.chdir(@orig_directory)
+		FileUtils.rmtree(@directory)
+	end
 	
 	As a project manager I want to create a meta-branch on some 
 	repository so i can start storing meta-data on it.
@@ -8,6 +27,8 @@ Feature: Project Manager creates a meta-branch
 	
 	When a metabranch was just created, gitabs manipulate the commit history
 	in order to have a single file: the json-schema provided in its creation.
+	
+	
 	
 	Scenario: list metabranch command help		
 		When I run `gitabs help metabranch`
