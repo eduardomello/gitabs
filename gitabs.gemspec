@@ -19,14 +19,14 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_development_dependency "guard-rspec"
+  s.add_development_dependency "guard-minitest"
   s.add_development_dependency "guard-cucumber"
+  s.add_development_dependency "rr"
+  s.add_development_dependency "aruba"
   s.add_development_dependency "rake"  
 
   s.add_runtime_dependency 'thor'
   s.add_runtime_dependency 'json'
   s.add_runtime_dependency 'json-schema'
-  s.add_runtime_dependency 'rugged'
-
   
 end

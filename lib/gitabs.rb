@@ -1,2 +1,2 @@
-require 'gitabs/metabranch'
+require 'gitabs/cli'
 
