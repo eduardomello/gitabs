@@ -3,47 +3,35 @@ require 'gitabs'
 require 'gitabs/metabranch'
 
 def stamp
-  @stamp ||= Time.new(2013, 11, 12)
+	@stamp ||= Time.new(2013, 11, 12)
 end
 
+def repo_path
+	return '/tmp/test-repo'
+end
 
 describe Gitabs::Metabranch do
 
 	before do
-		FakeFS.activate!
-		FakeFS::FileSystem.clear
+		#FakeFS.activate!
+		#FakeFS::FileSystem.clear
+		Dir.mkdir(repo_path) unless File.exists?(repo_path)
+		Rugged::Repository.init_at(repo_path)
+		Gitabs.repo = Rugged::Repository.new(repo_path)
 	end
 	
 	after do
-		FakeFS.deactivate!
-		FakeFS::FileSystem.clear
+		Dir.rmdir(repo_path)
+		#FakeFS.deactivate!
+		#FakeFS::FileSystem.clear
 	end
 	
-	it "should create a branch given no branch existed" do
-		repo = Object.new
-		branch = Object.new
-		Gitabs.repo = repo
-		
-		mock(repo).lookup("some-branch") { nil }
-		mock(repo).lookup("") { nil }
-		mock(repo).create_branch("some-branch")	{ branch }	
-		mock(branch).target { "" }
-								
+	it "should create a branch given no branch existed" do								
 		metabranch = Gitabs::Metabranch.new("some-branch", "assets/json-schema/user-schema.json")
+		metabranch.wont_be_nil
 	end
 	
-	it "should have an empty tree as the first commit" do
-		repo = Object.new
-		branch = Object.new
-		commit
-		Gitabs.repo = repo
-		
-		mock(repo).lookup("some-branch") { nil }
-		mock(repo).lookup("") { tree }
-		mock(repo).create_branch("some-branch")	{ branch }	
-		mock(branch).target { "" }
-		stub(tree).count { 0 }
-		
+	it "should have an empty tree as the first commit" do		
 		metabranch = Gitabs::Metabranch.new("some-branch", "assets/json-schema/user-schema.json")
 		metabranch.head.count.must_equal 0
 	end

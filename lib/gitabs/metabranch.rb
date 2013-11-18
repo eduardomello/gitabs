@@ -22,7 +22,7 @@ module Gitabs
 	
 		def load
 			#lookup if repo exists
-			@branch = Gitabs.repo.lookup(@name)
+			@branch = Rugged::Branch.lookup(Gitabs.repo, @name)
 			@branch = Gitabs.repo.create_branch(@name) if @branch == nil	
 			@head = Gitabs.repo.lookup(@branch.target)		
 		end
