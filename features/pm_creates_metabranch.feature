@@ -3,8 +3,14 @@ Feature: Project Manager creates a meta-branch
 	As a project manager I want to create a meta-branch on some 
 	repository so i can start storing meta-data on it
 	
-	Scenario: create a meta-branch
-		Given I on a git repository
-		When I create a meta-branch
-		Then I should be able do checkout this new branch
-		And I should see a single json-schema file on the branch
+	Scenario: list metabranch command help
+		Given I am on a git repository
+		When I run metabranch command
+		Then I should see 'Use this command to create and edit metabranches'
+			
+#	Scenario: create a metabranch
+#		Given I am on a git repository
+#		When I create a metabranch
+#		Then I should see 'new metabranch created'
+		
+	
