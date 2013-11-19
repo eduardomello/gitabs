@@ -1,8 +1,6 @@
-require 'gitabs/cli'
 require 'rugged'
 
-module Gitabs
-	def self.repository
-		@repository ||= Rugged::Repository.new('.')
-	end
-end
+
+require 'gitabs/version'
+require 'gitabs/metabranch'
+require 'gitabs/cli'

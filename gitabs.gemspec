@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "guard-minitest"
   s.add_development_dependency "guard-cucumber"
-  s.add_development_dependency "rr"
   s.add_development_dependency "aruba"
   s.add_development_dependency "rake"  
 
