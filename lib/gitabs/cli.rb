@@ -25,7 +25,12 @@ class Gitabs::CLI < Thor
 		elsif options[:size] then
 			puts "0 metadata records"			
 		else
-			puts "Switched to branch '#{name}'"
+			mb = Gitabs::Metabranch.new(name)
+			if mb.branch != nil then
+				puts "Loaded metabranch '#{name}'"
+			else
+				puts "Metabranch doesn't exist"
+			end
 		end	
 	end
 	

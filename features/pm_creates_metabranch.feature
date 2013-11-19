@@ -19,21 +19,26 @@ Feature: Project Manager creates a meta-branch
 	Scenario: run metabranch command with 0 arguments
 		When I run `gitabs metabranch`
 		Then the output should contain "ERROR"
-		
-	Scenario: run metabranch command with 1 argument 
+	
+	@one-metabranch	
+	Scenario: try to load metabranch (1 argument) and it exists
 		When I run `gitabs metabranch some-branch`
-		Then the output should contain "Switched to branch 'some-branch'"
+		Then the output should contain "Loaded metabranch 'some-branch'"
+		
+	Scenario: try to load metabranch (1 argument) and it doesn't exist
+		When I run `gitabs metabranch some-branch`
+		Then the output should contain "Metabranch doesn't exist"	
 	
 	Scenario: run metabranch command with file and size option
-		When I run `gitabs metabranch some-branch -f assets/json-schema/users.json -s`
+		When I run `gitabs metabranch some-branch -f assets/json-schema/user-schema.json -s`
 		Then the output should contain "ERROR"
 		
 	Scenario: run metabranch command with file option
 		Given I am on directory with a git repository
-		When I run `gitabs metabranch some-branch -f assets/json-schema/users.json`
+		When I run `gitabs metabranch some-branch -f assets/json-schema/user-schema.json`
 		Then the output should contain "Metabranch created"
 		And I run `gitabs metabranch some-branch`
-		And the output should contain "Switched to branch 'some-branch'"
+		And the output should contain "Loaded metabranch 'some-branch'"
 		And I run `gitabs metabranch some-branch -s`
 		And the output should contain "0 metadata records"
 			

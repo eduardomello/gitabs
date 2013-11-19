@@ -14,6 +14,7 @@ describe Gitabs::CLI do
 				`git add .`
 				`git commit -m 'dummy commit'`		
 			}
+			@assets_path = File.expand_path('../../../assets/', __FILE__)
 		end
 		after(:each) do
 			Dir.chdir(@orig_directory)
@@ -26,14 +27,20 @@ describe Gitabs::CLI do
 			end
 		end
 		describe "with 1 argument" do
-			it "output a error message" do
+			it "load metabranch if it exists" do
+				Gitabs::Metabranch.new('some-branch',@assets_path + '/json-schema/user-schema.json')
 				output = capture_io { Gitabs::CLI.start(["metabranch", "some-branch"]) }.join ''
-				output.must_match /.*Switched to branch 'some-branch'*./
+				output.must_match /.*Loaded metabranch 'some-branch'*./
+			end
+			
+			it "fails if no metabranch exists" do
+				output = capture_io { Gitabs::CLI.start(["metabranch", "some-branch"]) }.join ''
+				output.must_match /.*Metabranch doesn't exist*./
 			end
 		end
 		describe "with options" do
 			it "creates a metabranch with --file" do
-				output = capture_io { Gitabs::CLI.start(["metabranch","some-branch","-f","assets/json-schema/user.rb"]) }.join ''
+				output = capture_io { Gitabs::CLI.start(["metabranch","some-branch","-f",@assets_path + "/json-schema/user-schema.json"]) }.join ''
 				output.must_match /.*Metabranch created*./			
 			end	
 			it "shows metabranch size with --size" do
@@ -41,12 +48,12 @@ describe Gitabs::CLI do
 				output.must_match /.*0 metadata records*./
 			end
 			it "fails with --file and --size options" do
-				output = capture_io { Gitabs::CLI.start(["metabranch","some-branch","-f","assets/json-schema/user.rb", "-s"]) }.join ''
+				output = capture_io { Gitabs::CLI.start(["metabranch","some-branch","-f",@assets_path + "/json-schema/user-schema.json", "-s"]) }.join ''
 				output.must_match /.*ERROR*./
 			end	
 			
 			it "fails with invalid json-schema file as --file option" do
-				output = capture_io { Gitabs::CLI.start(["metabranch","some-branch","-f","assets/json-schema/user.rb", "-s"]) }.join ''
+				output = capture_io { Gitabs::CLI.start(["metabranch","some-branch","-f",@assets_path + "/json-schema/user-schema.json", "-s"]) }.join ''
 				output.must_match /.*Invalid JSON-Schema*./
 			end	
 		end

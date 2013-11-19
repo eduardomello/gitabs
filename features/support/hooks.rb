@@ -13,6 +13,11 @@ Before do
 	
 end
 
-AfterStep do
-	puts Dir.pwd
+After do
+	Dir.chdir(@orig_directory)
+	FileUtils.rmtree(@directory)
+end
+
+Before ('@one-metabranch') do 
+	Gitabs::Metabranch.new('some-branch','../assets/json-schema/user.json')
 end
