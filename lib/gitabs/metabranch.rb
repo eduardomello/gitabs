@@ -17,36 +17,19 @@ module Gitabs
 			@branch = Rugged::Branch.lookup(@repo, @name)
 
 			if @branch == nil && file != nil && valid? then
-			
-				@branch = @repo.create_branch(@name) 
 				
-				#commit json-schema and manipulate commits
-				#to have only the json-schema file on tree
-				#on a single commit
-				json_contents = File.read(@file)
-				json_name = @file.split('/').last
+				#creates a branch with an empty tree with master HEAD as parent
+				#see http://stackoverflow.com/questions/19181665/git-rebase-onto-results-on-single-commit
+				#for deeper explanation			
+				emptytree = `git mktree </dev/null`
+				emptycommit = `git commit-tree -p master #{emptytree} </dev/null`
+				`git branch #{name} #{emptycommit}`				
+				#copy json schema and commit it			
+				FileUtils.cp(@file, Dir.pwd)
+				`git add .`
+				`git commit -m 'Metabranch create'`
+				puts `git ls`
 				
-				oid = @repo.write(json_contents, :blob)
-				
-				parent = Rugged::Commit.lookup(@repo, @branch.tip.oid)
-				
-				builder = Rugged::Tree::Builder.new
-				
-				builder << { :type => :blob, :name => json_name, :oid => oid, :filemode => 0100644 }
-							
-				author = {:email => @repo.config['user.email'], :name => @repo.config['user.name'], :time => Time.now}
-								
-				options = {}				
-				options[:tree] = builder.write(@repo)
-				options[:author] = author
-				options[:message] = "Create metabranch #{@name}"
-				options[:committer] = author
-				options[:parents] = [ parent.oid ]
-				options[:update_ref] = 'HEAD'
-				
-				Rugged::Commit.create(@repo, options)
-				
-				puts `git ls-files`
 			end
 		end
 		
