@@ -12,10 +12,11 @@ Before do
 	`git commit -m 'dummy commit'`
 	
 	@assets_path = File.expand_path('../../../assets/', __FILE__)
-	Dir.chdir(@orig_directory)
+	
 end
 
 After do	
+	Dir.chdir(@orig_directory)
 	FileUtils.rmtree(@directory)
 end
 

@@ -12,7 +12,7 @@ module Gitabs
 		def initialize(name, file=nil)
 			@name = name
 			@file = file
-			puts @file
+			
 			@repo = Rugged::Repository.new('.')			
 			@branch = Rugged::Branch.lookup(@repo, @name)			
 
@@ -23,7 +23,7 @@ module Gitabs
 				#for further explanation	
 				`git mktree </dev/null`				
 				emptycommit = `git commit-tree -p master 4b825dc -m 'create metabranch' </dev/null`
-				`git checkout -b #{name} #{emptycommit}`
+				`git checkout -q -b #{name} #{emptycommit}`
 								
 				#copy json schema and commit it			
 				FileUtils.cp(@file, Dir.pwd)
@@ -44,6 +44,10 @@ module Gitabs
                 return false
             end
             true
+		end
+		
+		def size
+			(@branch.tip.tree.count - 1)
 		end
 	end
 end

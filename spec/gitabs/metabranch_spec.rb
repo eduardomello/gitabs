@@ -4,25 +4,31 @@ require 'gitabs/metabranch'
 require 'rugged'
 
 describe Gitabs::Metabranch do
+	
+	before(:each) do
+		@assets_path = File.expand_path('../../../assets/', __FILE__)
+
+		@directory = Dir.mktmpdir('temp-repo')
+		@orig_directory = Dir.pwd
+		Dir.chdir(@directory)
+		capture_io {
+			`git init`
+			`touch dummy`
+			`git add .`
+			`git commit -m 'dummy commit'`
+			`touch foo`
+			`git add .`
+			`git commit -m 'foo commit'`	
+		}						
+	end
+	
+	after(:each) do
+		Dir.chdir(@orig_directory)
+		FileUtils.rmtree(@directory)
+	end
+	
 	describe "#initialize" do
-		before(:each) do
-			@directory = Dir.mktmpdir('temp-repo')
-			@orig_directory = Dir.pwd
-			Dir.chdir(@directory)
-			capture_io {
-				`git init`
-				`touch dummy`
-				`git add .`
-				`git commit -m 'dummy commit'`
-				`touch foo`
-				`git add .`
-				`git commit -m 'foo commit'`	
-			}			
-		end
-		after(:each) do
-			Dir.chdir(@orig_directory)
-			FileUtils.rmtree(@directory)
-		end
+		
 		describe "try to load a metabranch" do
 			it "should have one argument" do
 				mb = Gitabs::Metabranch.new('some-branch')
@@ -78,10 +84,11 @@ describe Gitabs::Metabranch do
 	end
 	
 	describe "#size" do
-		let(:mb) { Gitabs::Metabranch.new('some-branch', @assets_path + '/json-schema/user-schema.json')}
 	
 		it "should return metadata total" do
-			mb.size.must_equal 0
+			mb = Gitabs::Metabranch.new('some-branch', @assets_path + '/json-schema/user-schema.json')
+			head = mb.branch.tip				
+			head.tree.count.must_equal 1
 		end
 	end
 end

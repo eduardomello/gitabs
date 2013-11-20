@@ -35,6 +35,26 @@ Feature: Project Manager creates a meta-branch
 		
 	Scenario: run metabranch command with file option
 		Given I am on directory with a git repository
+		And a file named "assets/json-schema/user-schema.json" with:
+			"""
+			{
+				"$schema": "http://json-schema.org/draft-04/schema#",
+				"title": "User",
+				"description": "A User",
+				"type": "object",
+				"properties": {
+					  	"name": {
+					  		"description": "The user name",
+					  		"type": "string"
+					  	},
+					  	"e-mail": {
+					  		"description": "The user e-mail",
+					  		"type": "string"
+					  	}  
+				},
+				"required": ["name", "e-mail"]    
+			}
+			"""
 		When I run `gitabs metabranch some-branch -f assets/json-schema/user-schema.json`
 		Then the output should contain "Metabranch created"
 		And I run `gitabs metabranch some-branch`

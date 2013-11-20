@@ -26,7 +26,8 @@ class Gitabs::CLI < Thor
 			end
 			
 		elsif options[:size] then
-			puts "0 metadata records"
+			mb = Gitabs::Metabranch.new(name)
+			puts mb.size.to_s + " metadata records"
 						
 		else
 			mb = Gitabs::Metabranch.new(name)

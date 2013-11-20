@@ -39,15 +39,19 @@ describe Gitabs::CLI do
 			end
 		end
 		describe "with options" do
+			
 			it "creates a metabranch with --file" do
 				output = capture_io { Gitabs::CLI.start(["metabranch","some-branch","-f",@assets_path + "/json-schema/user-schema.json"]) }.join ''
 				output.must_match /.*Metabranch created*./			
 			end	
+			
 			it "shows metabranch size with --size" do
+				Gitabs::Metabranch.new("some-branch", @assets_path + "/json-schema/user-schema.json")
 				output = capture_io { Gitabs::CLI.start(["metabranch","some-branch","-s"]) }.join ''
 				output.must_match /.*0 metadata records*./
 			end
-			it "fails with --file and --size options" do
+			
+			it "fails with --file and --size options" do				
 				output = capture_io { Gitabs::CLI.start(["metabranch","some-branch","-f",@assets_path + "/json-schema/user-schema.json", "-s"]) }.join ''
 				output.must_match /.*ERROR*./
 			end	
