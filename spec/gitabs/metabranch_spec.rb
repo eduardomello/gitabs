@@ -72,7 +72,7 @@ describe Gitabs::Metabranch do
 			it "should have its json-schema file on head commit" do
 				mb = Gitabs::Metabranch.new('some-branch', @assets_path + '/json-schema/user-schema.json')
 				head = mb.branch.tip						
-				head.tree.first[:name].must_match /.*user-schema.json*./
+				head.tree.first[:name].must_match /.*schema*./
 			end
 			
 			it "should have a single file on head commit" do

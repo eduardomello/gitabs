@@ -15,7 +15,7 @@ Before do
 	
 end
 
-After do	
+After do
 	Dir.chdir(@orig_directory)
 	FileUtils.rmtree(@directory)
 end

@@ -12,25 +12,31 @@ class Gitabs::CLI < Thor
 			:aliases => "s", 
 			:desc => "show how many metadata records this metabranch have",
 			:banner => ""
+			
 	def metabranch(name)
+				
+		file = options[:file] ? File.absolute_path(options[:file]) : nil
+		size = options[:size]
+
+		treat_metabranch_options(name, file, size)
+	end
+	
+	private
+	def treat_metabranch_options(name, file, size)
 		
-		error "ERROR: Invalid command. You can't use --file and --size options at the same time'" if options[:file] && options[:size] 
+		error "ERROR: Invalid command. You can't use --file and --size options at the same time'" if file && size
 		
-		if options[:file] then
-			file = File.absolute_path(options[:file])				
-			mb = Gitabs::Metabranch.new(name, file)
+		mb = Gitabs::Metabranch.new(name, file)
+		
+		if file then			
 			if mb.valid? then
 				puts "Metabranch created"
 			else
 				puts "Invalid JSON-Schema"
-			end
-			
-		elsif options[:size] then
-			mb = Gitabs::Metabranch.new(name)
-			puts mb.size.to_s + " metadata records"
-						
-		else
-			mb = Gitabs::Metabranch.new(name)
+			end			
+		elsif size then			
+			puts mb.size.to_s + " metadata records"						
+		else			
 			if mb.branch != nil then
 				puts "Loaded metabranch '#{name}'"
 			else
@@ -38,5 +44,6 @@ class Gitabs::CLI < Thor
 			end
 		end	
 	end
+	
 	
 end
