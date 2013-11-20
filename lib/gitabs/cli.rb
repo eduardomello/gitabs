@@ -17,13 +17,17 @@ class Gitabs::CLI < Thor
 		error "ERROR: Invalid command. You can't use --file and --size options at the same time'" if options[:file] && options[:size] 
 		
 		if options[:file] then
-			puts Dir.pwd
+			file = File.absolute_path(options[:file])				
+			mb = Gitabs::Metabranch.new(name, file)
+			if mb.valid? then
+				puts "Metabranch created"
+			else
+				puts "Invalid JSON-Schema"
+			end
 			
-			mb = Gitabs::Metabranch.new(name, options[:file])
-			error "Invalid JSON-Schema" unless mb.valid?
-			puts "Metabranch created"
 		elsif options[:size] then
-			puts "0 metadata records"			
+			puts "0 metadata records"
+						
 		else
 			mb = Gitabs::Metabranch.new(name)
 			if mb.branch != nil then

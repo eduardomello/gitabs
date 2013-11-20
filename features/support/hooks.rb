@@ -11,13 +11,14 @@ Before do
 	`git add .`
 	`git commit -m 'dummy commit'`
 	
+	@assets_path = File.expand_path('../../../assets/', __FILE__)
+	Dir.chdir(@orig_directory)
 end
 
-After do
-	Dir.chdir(@orig_directory)
+After do	
 	FileUtils.rmtree(@directory)
 end
 
 Before ('@one-metabranch') do 
-	Gitabs::Metabranch.new('some-branch','../assets/json-schema/user.json')
+	Gitabs::Metabranch.new('some-branch',@assets_path + '/json-schema/user-schema.json')
 end

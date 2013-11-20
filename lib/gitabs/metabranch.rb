@@ -12,24 +12,25 @@ module Gitabs
 		def initialize(name, file=nil)
 			@name = name
 			@file = file
-			
+			puts @file
 			@repo = Rugged::Repository.new('.')			
-			@branch = Rugged::Branch.lookup(@repo, @name)
+			@branch = Rugged::Branch.lookup(@repo, @name)			
 
 			if @branch == nil && file != nil && valid? then
 				
 				#creates a branch with an empty tree with master HEAD as parent
 				#see http://stackoverflow.com/questions/19181665/git-rebase-onto-results-on-single-commit
-				#for deeper explanation			
-				emptytree = `git mktree </dev/null`
-				emptycommit = `git commit-tree -p master #{emptytree} </dev/null`
-				`git branch #{name} #{emptycommit}`				
+				#for further explanation	
+				`git mktree </dev/null`				
+				emptycommit = `git commit-tree -p master 4b825dc -m 'create metabranch' </dev/null`
+				`git checkout -b #{name} #{emptycommit}`
+								
 				#copy json schema and commit it			
 				FileUtils.cp(@file, Dir.pwd)
 				`git add .`
-				`git commit -m 'Metabranch create'`
-				puts `git ls`
-				
+				`git commit -m 'create metabranch'`	
+							
+				@branch = Rugged::Branch.lookup(@repo, @name)
 			end
 		end
 		
@@ -39,7 +40,7 @@ module Gitabs
             begin        		
         		json_contents = File.read(@file)        		
                 JSON.parse(json_contents)                    
-            rescue                                
+            rescue                          
                 return false
             end
             true

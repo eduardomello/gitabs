@@ -13,9 +13,11 @@ describe Gitabs::Metabranch do
 				`git init`
 				`touch dummy`
 				`git add .`
-				`git commit -m 'dummy commit'`		
-			}
-			@assets_path = File.expand_path('../../../assets/', __FILE__)
+				`git commit -m 'dummy commit'`
+				`touch foo`
+				`git add .`
+				`git commit -m 'foo commit'`	
+			}			
 		end
 		after(:each) do
 			Dir.chdir(@orig_directory)
@@ -56,21 +58,30 @@ describe Gitabs::Metabranch do
 			it "should have a single commit" do
 				mb = Gitabs::Metabranch.new('some-branch', @assets_path + '/json-schema/user-schema.json')
 				walker = Rugged::Walker.new(mb.repo)
-				walker.push(mb.branch.target)
+				walker.push(mb.branch.tip.oid)
+				walker.hide(mb.branch.tip.parents[0].oid)
 				walker.count.must_equal 1
 			end
 			
 			it "should have its json-schema file on head commit" do
 				mb = Gitabs::Metabranch.new('some-branch', @assets_path + '/json-schema/user-schema.json')
-				head = Rugged::Commit.lookup(mb.repo, mb.branch.tip.oid)				
+				head = mb.branch.tip						
 				head.tree.first[:name].must_match /.*user-schema.json*./
 			end
 			
 			it "should have a single file on head commit" do
 				mb = Gitabs::Metabranch.new('some-branch', @assets_path + '/json-schema/user-schema.json')
-				head = Rugged::Commit.lookup(mb.repo, mb.branch.tip.oid)				
+				head = mb.branch.tip				
 				head.tree.count.must_equal 1
 			end
+		end
+	end
+	
+	describe "#size" do
+		let(:mb) { Gitabs::Metabranch.new('some-branch', @assets_path + '/json-schema/user-schema.json')}
+	
+		it "should return metadata total" do
+			mb.size.must_equal 0
 		end
 	end
 end

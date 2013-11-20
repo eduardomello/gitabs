@@ -53,7 +53,7 @@ describe Gitabs::CLI do
 			end	
 			
 			it "fails with invalid json-schema file as --file option" do
-				output = capture_io { Gitabs::CLI.start(["metabranch","some-branch","-f",@assets_path + "/json-schema/user-schema.json", "-s"]) }.join ''
+				output = capture_io { Gitabs::CLI.start(["metabranch","some-branch","-f",@assets_path + "/json/invalid.json", "-s"]) }.join ''
 				output.must_match /.*Invalid JSON-Schema*./
 			end	
 		end
