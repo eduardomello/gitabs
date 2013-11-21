@@ -27,14 +27,14 @@ module Gitabs
 		
 		def valid?
 			# It should verify that the JSON schema is valid under draft 4.
-            # For now, it's just validating if its a valid JSON file.
-            begin        		
-        		json_contents = File.read(@file)        		
-                JSON.parse(json_contents)                    
-            rescue                          
-                return false
-            end
-            true
+            		# For now, it's just validating if its a valid JSON file.
+            		begin        		
+        			json_contents = File.read(@file)        		
+                		JSON.parse(json_contents)                    
+            		rescue                          
+                		return false
+            		end
+            		true
 		end
 		
 		def size			
