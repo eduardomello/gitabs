@@ -1,10 +1,10 @@
 
 Feature: Project Manager creates a meta-branch
 	
-	As a project manager I want to create a meta-branch on some 
-	repository so i can start storing meta-data on it.
+	A project manager must be able to create a metabranch on some 
+	repository so he can start storing metadata on it.
 	
-	To create a metbranch you need to provide a valid json-schema file
+	To create a metabranch you need to provide a valid json-schema file
 	which will validate future metadata. 
 	
 	When a metabranch was just created, gitabs manipulate the commit history
@@ -22,19 +22,19 @@ Feature: Project Manager creates a meta-branch
 	
 	@one-metabranch	
 	Scenario: try to load metabranch (1 argument) and it exists
-		When I run `gitabs metabranch some-branch`
-		Then the output should contain "Loaded metabranch 'some-branch'"
+		When I run `gitabs metabranch users-meta`
+		Then the output should contain "Loaded metabranch 'users-meta'"
 		
 	Scenario: try to load metabranch (1 argument) and it doesn't exist
-		When I run `gitabs metabranch some-branch`
+		When I run `gitabs metabranch users-meta`
 		Then the output should contain "Metabranch doesn't exist"	
 	
 	Scenario: run metabranch command with file and size option
-		When I run `gitabs metabranch some-branch -f assets/json-schema/user-schema.json -s`
+		When I run `gitabs metabranch users-meta -f assets/json-schema/user-schema.json -s`
 		Then the output should contain "ERROR"
 		
 	Scenario: run metabranch command with file option
-		Given I am on directory with a git repository
+		Given I am on a directory with a git repository
 		And a file named "assets/json-schema/user-schema.json" with:
 			"""
 			{
@@ -55,16 +55,16 @@ Feature: Project Manager creates a meta-branch
 				"required": ["name", "e-mail"]    
 			}
 			"""
-		When I run `gitabs metabranch some-branch -f assets/json-schema/user-schema.json`
+		When I run `gitabs metabranch users-meta -f assets/json-schema/user-schema.json`
 		Then the output should contain "Metabranch created"
-		And I run `gitabs metabranch some-branch`
-		And the output should contain "Loaded metabranch 'some-branch'"
-		And I run `gitabs metabranch some-branch -s`
+		And I run `gitabs metabranch users-meta`
+		And the output should contain "Loaded metabranch 'users-meta'"
+		And I run `gitabs metabranch users-meta -s`
 		And the output should contain "0 metadata records"
 			
 	Scenario: run metabranch command with invalid json-schema as file option
-		Given I am on directory with a git repository
-		When I run `gitabs metabranch some-branch -f assets/json/invalid.json`
+		Given I am on a directory with a git repository
+		When I run `gitabs metabranch users-meta -f assets/json/invalid.json`
 		Then the output should contain "Invalid JSON-Schema"
 		
 		

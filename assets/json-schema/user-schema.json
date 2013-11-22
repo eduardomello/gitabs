@@ -13,5 +13,6 @@
 		  		"type": "string"
 		  	}  
     },
-    "required": ["name", "e-mail"]    
+    "required": ["name", "e-mail"],
+    "additionalProperties": false
 }

@@ -4,37 +4,35 @@ require 'json'
 module Gitabs
 	class Metabranch
 	
-		attr_accessor :branch
-		attr_accessor :repo
-		attr_accessor :name
-		attr_accessor :file
+		attr_reader :branch
+		attr_reader :repo
+		attr_reader :name
+		attr_reader :file
 		
 		def initialize(name, file=nil)
 			@name = name
 			@file = file
-			
 			@repo = Rugged::Repository.new('.')					
-			@branch = Rugged::Branch.lookup(@repo, @name)			
+			@branch = Rugged::Branch.lookup(@repo, @name)				
 			
-			if @branch == nil && file != nil && valid? then
-					
-				create_empty_branch(@name)				
-				commit_json_schema
-							
-				@branch = Rugged::Branch.lookup(@repo, @name)
-			end
+			create_new_metabranch if @branch == nil && @file && valid? 
+			load_file unless @file	
+			checkout_if_necessary		
+				
 		end
 		
-		def valid?
-			# It should verify that the JSON schema is valid under draft 4.
-            		# For now, it's just validating if its a valid JSON file.
-            		begin        		
-        			json_contents = File.read(@file)        		
-                		JSON.parse(json_contents)                    
-            		rescue                          
-                		return false
-            		end
-            		true
+		def valid?			
+    		return true if schema != nil
+    		false    		
+		end				
+		
+		def schema
+			begin
+				checkout_if_necessary
+				@schema ||= JSON.parse(File.read(@file))
+			rescue				
+				return nil
+			end
 		end
 		
 		def size			
@@ -42,22 +40,37 @@ module Gitabs
 		end
 		
 		private 
-		def create_empty_branch(name)
+		def checkout_if_necessary
+			`git checkout #{@name}` if `git rev-parse --abbrev-ref HEAD`.strip != @name && @branch
+		end
+		
+		def create_new_metabranch
+			create_empty_branch
+			commit_json_schema
+						
+			@branch = Rugged::Branch.lookup(@repo, @name)
+			
+		end
+		
+		def create_empty_branch
 			#see http://stackoverflow.com/questions/19181665/git-rebase-onto-results-on-single-commit
 			#for further explanation
 			`git mktree </dev/null`				
 			emptycommit = `git commit-tree -p master 4b825dc -m 'create metabranch' </dev/null`
-			`git checkout -q -b #{name} #{emptycommit}`
+			`git checkout -q -b #{@name} #{emptycommit}`
 		end
 		
 		def commit_json_schema
-			Dir.mkdir('schema')
-			FileUtils.cp(@file, Dir.pwd + '/schema')
-			file_name = File.basename(@file)
-			@file = Dir.pwd + '/schema/' + file_name
-			`git add schema/#{file_name}`
+			file_path = Dir.pwd + '/' + @name + '.schema'
+			FileUtils.cp(@file, file_path)			
+			@file = file_path
+			`git add #{@name}.schema`
 			`git commit -m 'create metabranch'`	
 			`git clean -f -d`
+		end
+		
+		def load_file
+			@file = @repo.workdir + @name + '.schema'
 		end
 	end
 end

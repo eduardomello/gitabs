@@ -21,5 +21,5 @@ After do
 end
 
 Before ('@one-metabranch') do 
-	Gitabs::Metabranch.new('some-branch',@assets_path + '/json-schema/user-schema.json')
+	Gitabs::Metabranch.new('users-meta',@assets_path + '/json-schema/user-schema.json')
 end
