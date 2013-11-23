@@ -40,7 +40,10 @@ class Gitabs::CLI < Thor
 			:desc => "work branch name",
 			:required => true
 	def execute(metadata)
-		puts "new task branch '#{metadata}' created"
+		outcome = catch(:execute) do
+			md = Gitabs::Metadata.execute(metadata, options[:workbranch])
+		end			
+		puts outcome
 	end
 	
 	private

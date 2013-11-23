@@ -15,8 +15,19 @@ Given(/^this repository has a metabranch named 'users\-meta'$/) do
   mb.branch.wont_be_nil
 end
 
-Given(/^current branch is 'tasks\-meta'$/) do
-  output = capture_io { `git rev-parse --abbrev-ref HEAD`}.join ''
-  output.must_match 'task-meta'
+Given(/^current branch is 'task\-meta'$/) do
+	output = capture_io { `git rev-parse --abbrev-ref HEAD`}.join ''
+	output.must_match 'task-meta'
+end
+
+
+Given(/^the current branch is not 'task\-meta'$/) do
+  	output = capture_io { `git rev-parse --abbrev-ref HEAD`}.join ''
+	output.wont_match 'task-meta'
+end
+
+Given(/^the branch 'void\-branch' does not exist$/) do
+  	output = capture_subprocess_io { `git checkout void-branch` }.join ''
+	output.must_match 'did not match any file(s) known to git'
 end
 

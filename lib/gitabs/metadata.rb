@@ -20,6 +20,12 @@ module Gitabs
 			
 		end
 		
+		def self.execute(metadata, workbranch)
+			load_current_branch
+			throw:execute, 'work branch not found' if `git branch`.include?(workbranch)
+			throw:execute, 'No metadata found'
+		end
+		
 		def valid_json?			
     		begin        		
 				json_contents = File.read(@file)        		
