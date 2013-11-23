@@ -65,4 +65,5 @@ Feature: Collaborator creates metadata
 			"name": "John Doe"
 		}
 		"""
+		When I run `gitabs metadata -f assets/json/john-doe-required-problem.json`
 		Then the output should contain "JSON file not accepted on this metabranch"

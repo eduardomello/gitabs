@@ -31,12 +31,15 @@ class Gitabs::CLI < Thor
 		file = options[:file] ? File.absolute_path(options[:file]) : nil
 		
 		md = Gitabs::Metadata.new(file)
+		
 		if md.data then
 			puts "Metadata created"
+		elsif !md.metabranch.schema then
+			puts "Current branch is not a metabranch"
 		elsif !md.valid_json? then
-			puts "Invalid JSON file"
+			puts "Invalid JSON file"		
 		elsif !md.valid_schema? then
-			puts "JSON file not accepted on this metabranch"
+			puts "JSON file not accepted on this metabranch"		
 		end
 	end
 	

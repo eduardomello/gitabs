@@ -13,26 +13,24 @@ module Gitabs
 			repo = Rugged::Repository.new('.')
 			current_branch = repo.head.name.split("/").last				
 			@metabranch = Gitabs::Metabranch.new(current_branch)			
-			if @metabranch.schema then
-				if valid_schema? then
-					#insert new metadata
-					FileUtils.cp(@file, Dir.pwd)
-					file_name = File.basename(@file)
-					@file = Dir.pwd + '/' + file_name
-					`git add #{file_name}`
-					`git commit -m 'add metadata #{file_name}'`	
-							
-					#load file
-					begin
-						json_contents = File.read(@file)
-						@data = JSON.parse(json_contents)
-					rescue
-						@data = nil
-					end
+			
+			if valid_schema? then
+				#insert new metadata
+				FileUtils.cp(@file, Dir.pwd)
+				file_name = File.basename(@file)
+				@file = Dir.pwd + '/' + file_name
+				`git add #{file_name}`
+				`git commit -m 'add metadata #{file_name}'`	
+						
+				#load file
+				begin
+					json_contents = File.read(@file)
+					@data = JSON.parse(json_contents)
+				rescue
+					@data = nil
 				end
-			else
-				puts 'Current branch is not a metabranch'
 			end
+			
 		end
 		
 		def valid_json?			
