@@ -16,9 +16,10 @@ module Gitabs
 			@branch = Rugged::Branch.lookup(@repo, @name)				
 			
 			create_new_metabranch if @branch == nil && @file && valid? 
-			load_file unless @file	
-			checkout_if_necessary		
-				
+			if @branch then
+				load_file unless @file	
+				checkout_if_necessary		
+			end				
 		end
 		
 		def valid?			

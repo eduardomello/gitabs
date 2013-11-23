@@ -14,9 +14,11 @@ Feature: Collaborator creates metadata
 	Scenario: run metadata command with 0 arguments
 		When I run `gitabs metadata`
 		Then the output should contain "No value provided for required options"
-		
+	
+	@one-metabranch	
 	Scenario: add valid metadata on current branch
 		Given I am on a directory with a git repository
+		And this repository has a metabranch named 'users-meta'
 		And a file named "assets/json/john-doe.json" with:
 		"""
 		{
@@ -27,8 +29,9 @@ Feature: Collaborator creates metadata
 		When I run `gitabs metadata -f assets/json/john-doe.json`
 		Then the output should contain "Metadata created"
 		
+	@one-metabranch		
 	Scenario: add invalid json file on current branch
-		Given I am on a directory with a git repository
+		Given I am on a directory with a git repository		
 		And a file named "assets/json/invalid.json" with:
 		"""
 		{		
@@ -36,9 +39,11 @@ Feature: Collaborator creates metadata
 		"""
 		When I run `gitabs metadata -f assets/json/invalid.json`
 		Then the output should contain "Invalid JSON file"
-		
+	
+	@one-metabranch	
 	Scenario: add valid json file with more fields then expected by the metabranch schema
 		Given I am on a directory with a git repository
+		And this repository has a metabranch named 'users-meta'
 		And a file named "assets/json/john-doe-more-fields.json" with:
 		"""
 		{
@@ -50,9 +55,11 @@ Feature: Collaborator creates metadata
 		When I run `gitabs metadata -f assets/json/john-doe-more-fields.json`
 		Then the output should contain "JSON file not accepted on this metabranch"
 
+	@one-metabranch	
 	Scenario: add valid json file without required fields by the metabranch schema
 		Given I am on a directory with a git repository
-		And a file named "assets/json/john-doe-more-fields.json" with:
+		And this repository has a metabranch named 'users-meta'
+		And a file named "assets/json/john-doe-required-problem.json" with:
 		"""
 		{
 			"name": "John Doe"

@@ -1,5 +1,6 @@
 require 'gitabs'
 require 'gitabs/metabranch'
+require 'gitabs/metadata'
 require 'thor'
 
 class Gitabs::CLI < Thor
