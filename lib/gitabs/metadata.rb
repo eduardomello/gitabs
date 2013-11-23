@@ -10,25 +10,12 @@ module Gitabs
 	
 		def initialize(file)
 			@file = file	
-			repo = Rugged::Repository.new('.')
-			current_branch = repo.head.name.split("/").last				
-			@metabranch = Gitabs::Metabranch.new(current_branch)			
 			
-			if valid_schema? then
-				#insert new metadata
-				FileUtils.cp(@file, Dir.pwd)
-				file_name = File.basename(@file)
-				@file = Dir.pwd + '/' + file_name
-				`git add #{file_name}`
-				`git commit -m 'add metadata #{file_name}'`	
-						
-				#load file
-				begin
-					json_contents = File.read(@file)
-					@data = JSON.parse(json_contents)
-				rescue
-					@data = nil
-				end
+			load_current_branch						
+			
+			if valid_schema? then				
+				insert_metadata
+				parse_data
 			end
 			
 		end
@@ -54,6 +41,30 @@ module Gitabs
         	end
         	false  
         end    
+		
+		private
+		def load_current_branch
+			repo = Rugged::Repository.new('.')
+			current_branch = repo.head.name.split("/").last				
+			@metabranch = Gitabs::Metabranch.new(current_branch)
+		end
+		
+		def insert_metadata
+			FileUtils.cp(@file, Dir.pwd)
+			file_name = File.basename(@file)
+			@file = Dir.pwd + '/' + file_name
+			`git add #{file_name}`
+			`git commit -m 'add metadata #{file_name}'`	
+		end
+		
+		def parse_data
+			begin
+				json_contents = File.read(@file)
+				@data = JSON.parse(json_contents)
+			rescue
+				@data = nil
+			end
+		end
 		
 	end
 end

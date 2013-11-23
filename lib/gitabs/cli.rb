@@ -29,18 +29,9 @@ class Gitabs::CLI < Thor
 			:required => true			
 	def metadata
 		file = options[:file] ? File.absolute_path(options[:file]) : nil
+				
+		treat_metadata_options(file)
 		
-		md = Gitabs::Metadata.new(file)
-		
-		if md.data then
-			puts "Metadata created"
-		elsif !md.metabranch.schema then
-			puts "Current branch is not a metabranch"
-		elsif !md.valid_json? then
-			puts "Invalid JSON file"		
-		elsif !md.valid_schema? then
-			puts "JSON file not accepted on this metabranch"		
-		end
 	end
 	
 	private
@@ -65,6 +56,20 @@ class Gitabs::CLI < Thor
 				puts "Metabranch doesn't exist"
 			end
 		end	
+	end
+	
+	def treat_metadata_options(file)
+		md = Gitabs::Metadata.new(file)
+		
+		if md.data then
+			puts "Metadata created"
+		elsif !md.metabranch.schema then
+			puts "Current branch is not a metabranch"
+		elsif !md.valid_json? then
+			puts "Invalid JSON file"		
+		elsif !md.valid_schema? then
+			puts "JSON file not accepted on this metabranch"		
+		end
 	end
 	
 	
