@@ -23,3 +23,7 @@ end
 Before ('@one-metabranch') do 
 	Gitabs::Metabranch.new('users-meta',@assets_path + '/json-schema/user-schema.json')
 end
+
+Before ('@task-meta') do
+	Gitabs::Metabranch.new('task-meta', @assets_path + '/json-schema/task-schema.json')
+end

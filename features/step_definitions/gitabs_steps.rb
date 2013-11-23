@@ -15,3 +15,8 @@ Given(/^this repository has a metabranch named 'users\-meta'$/) do
   mb.branch.wont_be_nil
 end
 
+Given(/^current branch is 'tasks\-meta'$/) do
+  output = capture_io { `git rev-parse --abbrev-ref HEAD`}.join ''
+  output.must_match 'task-meta'
+end
+

@@ -34,6 +34,15 @@ class Gitabs::CLI < Thor
 		
 	end
 	
+	desc "execute [metadata]", "Use this command to execute some work out of a certain metadata" 
+	option 	:workbranch,
+			:aliases => "w",
+			:desc => "work branch name",
+			:required => true
+	def execute(metadata)
+		puts "new task branch '#{metadata}' created"
+	end
+	
 	private
 	def treat_metabranch_options(name, file, size)
 		

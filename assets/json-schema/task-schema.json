@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Task",
+    "description": "A task",
+    "type": "object",
+    "properties": {
+		  	"title": {
+		  		"description": "The task title",
+		  		"type": "string"
+		  	},
+		  	"description": {
+		  		"description": "a description for the task",
+		  		"type": "string"
+		  	},
+		  	"estimatedTime": {
+		  		"description": "Estimated time to get task done",
+		  		"type": "integer",
+		  		"minimum": "1"
+		  	},
+		  	"status": {
+		  		"enum": ["todo","doing","done"]
+		  	}
+    },
+    "required": ["title", "description"],
+    "additionalProperties": false
+}
