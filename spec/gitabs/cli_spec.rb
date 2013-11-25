@@ -30,26 +30,26 @@ describe Gitabs::CLI do
 		describe "with file argument" do
 			it "creates a metadata on current branch if valid file" do
 				capture_io { Gitabs::CLI.start(["metabranch", "users-meta", "-f", @assets_path + '/json-schema/user-schema.json']) }
-				output = capture_io { Gitabs::CLI.start(["metadata", "-f", @assets_path + "/json/john-doe.json"])}.join ''
+				output = capture_io { Gitabs::CLI.start(["metadata", "john-doe", "-f", @assets_path + "/json/john-doe.json"])}.join ''
 				output.must_match /.*Metadata created*./
 			end
 			it "fails for a invalid json file" do
 				capture_io { Gitabs::CLI.start(["metabranch", "users-meta", "-f", @assets_path + '/json-schema/user-schema.json']) }
-				output = capture_io { Gitabs::CLI.start(["metadata", "-f", @assets_path + "/json/invalid.json"])}.join ''
+				output = capture_io { Gitabs::CLI.start(["metadata", "john-doe", "-f", @assets_path + "/json/invalid.json"])}.join ''
 				output.must_match /.*Invalid JSON*./
 			end
 			it "fails for invalid file for metabranch schema with more fields" do
 				capture_io { Gitabs::CLI.start(["metabranch", "users-meta", "-f", @assets_path + '/json-schema/user-schema.json']) }
-				output = capture_io { Gitabs::CLI.start(["metadata", "-f", @assets_path + "/json/john-doe-more-fields.json"])}.join ''
+				output = capture_io { Gitabs::CLI.start(["metadata", "john-doe", "-f", @assets_path + "/json/john-doe-more-fields.json"])}.join ''
 				output.must_match /.*JSON file not accepted on this metabranch*./
 			end
 			it "fails for invalid file for metabranch schema missing required fields" do
 				capture_io { Gitabs::CLI.start(["metabranch", "users-meta", "-f", @assets_path + '/json-schema/user-schema.json']) }
-				output = capture_io { Gitabs::CLI.start(["metadata", "-f", @assets_path + "/json/john-doe-required-problem.json"])}.join ''
+				output = capture_io { Gitabs::CLI.start(["metadata", "john-doe", "-f", @assets_path + "/json/john-doe-required-problem.json"])}.join ''
 				output.must_match /.*JSON file not accepted on this metabranch*./
 			end
 			it "fails if current branch is not a metabranch" do
-				output = capture_io { Gitabs::CLI.start(["metadata", "-f", @assets_path + "/json/john-doe-require-problem.json"])}.join ''
+				output = capture_io { Gitabs::CLI.start(["metadata", "john-doe", "-f", @assets_path + "/json/john-doe-require-problem.json"])}.join ''
 				output.must_match /.*Current branch is not a metabranch*./
 			end
 		end

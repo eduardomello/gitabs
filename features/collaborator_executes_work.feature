@@ -28,10 +28,12 @@ Feature: Collaborator executes work
 		Given I am on a directory with a git repository
 		And the current branch is not 'task-meta'	
 		When I run `gitabs execute landing-page -w master`
-		Then the output should contain "No metadata found"
-				
+		Then the output should contain "Current branch is not a metabranch"
+	
+	@task-meta			
 	Scenario: run execute but no branch exists for -w flag
-		Given I am on a directory with a git repository
+		Given I am on a directory with a git repository		
+		And current branch is 'task-meta'
 		And the branch 'void-branch' does not exist
 		When I run `gitabs execute landing-page -w void-branch`
 		Then the output should contain "work branch not found"

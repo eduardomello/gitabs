@@ -27,10 +27,10 @@ class Gitabs::CLI < Thor
 			:aliases => "f",
 			:desc => "path to json file",
 			:required => true			
-	def metadata
+	def metadata(name)
 		file = options[:file] ? File.absolute_path(options[:file]) : nil
 				
-		treat_metadata_options(file)
+		treat_metadata_options(name, file)
 		
 	end
 	
@@ -40,10 +40,15 @@ class Gitabs::CLI < Thor
 			:desc => "work branch name",
 			:required => true
 	def execute(metadata)
-		outcome = catch(:execute) do
-			md = Gitabs::Metadata.execute(metadata, options[:workbranch])
+		begin
+			md = Gitabs::Metadata.new(metadata)
+			md.execute(options[:workbranch])
+		rescue => e
+			puts e.message
+		else
+			puts "new task branch '#{metadata}' created"
 		end			
-		puts outcome
+		
 	end
 	
 	private
@@ -70,19 +75,13 @@ class Gitabs::CLI < Thor
 		end	
 	end
 	
-	def treat_metadata_options(file)
-		md = Gitabs::Metadata.new(file)
-		
-		if md.data then
+	def treat_metadata_options(name, file)
+		begin
+			md = Gitabs::Metadata.new(name, file)
+		rescue => e
+			puts e.message
+		else
 			puts "Metadata created"
-		elsif !md.metabranch.schema then
-			puts "Current branch is not a metabranch"
-		elsif !md.valid_json? then
-			puts "Invalid JSON file"		
-		elsif !md.valid_schema? then
-			puts "JSON file not accepted on this metabranch"		
-		end
-	end
-	
-	
+		end			
+	end	
 end

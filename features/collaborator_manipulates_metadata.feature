@@ -1,11 +1,17 @@
 
-Feature: Collaborator creates metadata
+Feature: Collaborator manipulates metadata
 
-	A collaborating peer in the project must be able to create metadata
+	A collaborating peer in the project must be able to manipulate metadata
 	in a certain metabranch so he may document the project.
 	
 	To create a metadata, there must be a previous metabranch created
 	and there must be a json valid file under the schema of that metabranch.
+	The input file will be renamed after the provided name argument. Also, it will
+	have its extension as .data, to difference the .schema extension.
+	The user must be checked out on the target metabranch.
+	
+	To load a metadata, the user must be checkout on the target metabranch and gitabs
+	will try to load a file after the name argument provided.
 	
 	Scenario: list metadata command help
 		When I run `gitabs help metadata`
@@ -26,7 +32,7 @@ Feature: Collaborator creates metadata
 			"e-mail": "john@doe.com"
 		}
 		"""
-		When I run `gitabs metadata -f assets/json/john-doe.json`
+		When I run `gitabs metadata john-doe -f assets/json/john-doe.json`
 		Then the output should contain "Metadata created"
 		
 	@one-metabranch		
@@ -37,7 +43,7 @@ Feature: Collaborator creates metadata
 		{		
 			value:"value"
 		"""
-		When I run `gitabs metadata -f assets/json/invalid.json`
+		When I run `gitabs metadata john-doe -f assets/json/invalid.json`
 		Then the output should contain "Invalid JSON file"
 	
 	@one-metabranch	
@@ -52,7 +58,7 @@ Feature: Collaborator creates metadata
 			"username": "johndoe"
 		}
 		"""
-		When I run `gitabs metadata -f assets/json/john-doe-more-fields.json`
+		When I run `gitabs metadata john-doe -f assets/json/john-doe-more-fields.json`
 		Then the output should contain "JSON file not accepted on this metabranch"
 
 	@one-metabranch	
@@ -65,5 +71,5 @@ Feature: Collaborator creates metadata
 			"name": "John Doe"
 		}
 		"""
-		When I run `gitabs metadata -f assets/json/john-doe-required-problem.json`
+		When I run `gitabs metadata john-doe -f assets/json/john-doe-required-problem.json`
 		Then the output should contain "JSON file not accepted on this metabranch"

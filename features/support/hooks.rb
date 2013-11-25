@@ -26,4 +26,5 @@ end
 
 Before ('@task-meta') do
 	Gitabs::Metabranch.new('task-meta', @assets_path + '/json-schema/task-schema.json')
+	Gitabs::Metadata.new('landing-page', @assets_path + '/json/landing-page.json')
 end
