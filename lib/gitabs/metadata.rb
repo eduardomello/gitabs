@@ -15,18 +15,11 @@ module Gitabs
 			
 			load_current_branch						
 			
-			if file then			
-				valid_schema?	
-				insert_metadata
-				parse_data
+			if file then
+				new_metadata 			
 			else
-				raise "No metadata named '#{@name}' found" unless `git ls-files`.include?(name + '.data') 
-				@file = @metabranch.repo.workdir + name + ".data"
-				parse_data
+				load_metadata
 			end
-			
-			
-			
 		end
 		
 		def execute(workbranch)
@@ -38,6 +31,7 @@ module Gitabs
 			`git checkout -b #{@name} #{emptycommit}`
 		end
 		
+				
 		def valid_json?			
     		begin        		
 				json_contents = File.read(@file)        		
@@ -65,8 +59,20 @@ module Gitabs
 			raise "Current branch is not a metabranch" unless @metabranch.schema
 		end
 		
+		def new_metadata
+			valid_schema?	
+			insert_metadata
+			parse_data
+		end
+		
+		def load_metadata
+			raise "No metadata named '#{@name}' found" unless `git ls-files`.include?(name + '.data') 
+			@file = @metabranch.repo.workdir + @name + ".data"
+			parse_data
+		end
+				
 		def insert_metadata
-			file_path = Dir.pwd + '/' + @name + '.data'
+			file_path = @metabranch.repo.workdir + @name + '.data'
 			FileUtils.cp(@file, file_path)			
 			@file = file_path
 			`git add #{@name}.data`
