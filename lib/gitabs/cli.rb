@@ -57,7 +57,14 @@ class Gitabs::CLI < Thor
 		   :desc => "message detailing your finished work",
 		   :required => true
 	def submit
-		puts "Task submitted"
+		begin
+			md = Gitabs::Metadata.new
+			md.submit(options[:message])
+		rescue => e
+			puts e.message
+		else
+			puts "Task submitted"
+		end
 	end
 	
 	private

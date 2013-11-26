@@ -66,7 +66,7 @@ module Gitabs
 			FileUtils.cp(@file, file_path)			
 			@file = file_path
 			`git add #{@name}.schema`
-			`git commit -m 'create metabranch'`	
+			`git commit -m 'define metabranch schema'`	
 			`git clean -f -d`
 		end
 		

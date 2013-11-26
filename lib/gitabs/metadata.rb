@@ -10,11 +10,19 @@ module Gitabs
 		attr_reader :data
 		attr_reader :metabranch
 	
-		def initialize(name, file=nil)
+		def initialize(name=nil, file=nil)
 			@name = name
 			@file = file	
 			
-			load_metabranch						
+			load_metabranch		
+			
+			if name = nil then
+				task_branch = `git rev-parse --abbrev-ref HEAD`.strip
+				split_branch = task_branch.split('#')
+				workbranch = split_branch[0]
+				metabranch = split_branch[1]
+				@name = split_branch[2]				
+			end		
 			
 			if file then
 				new_metadata 			
@@ -52,6 +60,7 @@ module Gitabs
 			`git update-ref -m '#{message}' refs/heads/#{metabranch} #{forgedcommit}`
 			`git checkout -q #{workbranch}`
 			`git branch -D #{task_branch}`
+			git 
 		end
 		
 				
