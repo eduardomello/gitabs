@@ -51,6 +51,15 @@ class Gitabs::CLI < Thor
 		
 	end
 	
+	desc "submit", "Use this command to submit a finished work"
+	option :message,
+		   :aliases => "m",
+		   :desc => "message detailing your finished work",
+		   :required => true
+	def submit
+		puts "Task submitted"
+	end
+	
 	private
 	def treat_metabranch_options(name, file, size)
 		

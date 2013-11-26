@@ -42,7 +42,7 @@ module Gitabs
 		
 		private 
 		def checkout_if_necessary
-			`git checkout #{@name}` if `git rev-parse --abbrev-ref HEAD`.strip != @name && @branch
+			`git checkout -q #{@name}` if `git rev-parse --abbrev-ref HEAD`.strip != @name && @branch
 		end
 		
 		def create_new_metabranch

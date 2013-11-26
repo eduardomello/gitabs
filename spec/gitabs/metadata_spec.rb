@@ -63,7 +63,7 @@ describe Gitabs::Metadata do
 			md = Gitabs::Metadata.new("landing-page", @assets_path + "/json/landing-page.json")
 			md.execute('master')
 			output = capture_subprocess_io { system('git rev-parse --abbrev-ref HEAD')}.join ''
-			output.must_match 'landing-page'
+			output.must_match 'master#task-meta#landing-page'
 
 			parent_list 	= capture_subprocess_io { system('git rev-list --parents -n 1 HEAD')}.join ''
 			master_hash 	= capture_subprocess_io { system('git show-ref --hash master')}.join ''
@@ -78,6 +78,69 @@ describe Gitabs::Metadata do
 			task_files.must_match master_files			
 			
 		end
+	end
+	
+	describe "#submit" do
+		before(:each) do
+			Gitabs::Metabranch.new('task-meta', @assets_path + '/json-schema/task-schema.json')
+		end
+		describe "failing situations" do
+			let(:md) { Gitabs::Metadata.new("landing-page", @assets_path + "/json/landing-page.json") }
+			before(:each) do					
+				md.execute('master')
+			end
+			
+			it "fails if no argument is provided" do				
+			 	proc { md.submit }.must_raise(ArgumentError)
+			end
+			 
+			 it "fails if no message is provided" do
+			 	proc { md.submit('') }.must_raise(RuntimeError)
+			 end
+			 
+			 it "should fail if nothing to stage" do
+			 	proc { md.submit('finish task')}.must_raise(RuntimeError)
+			 end
+		end
+		 
+		describe "on succesful submit" do
+			let(:md) {Gitabs::Metadata.new("landing-page", @assets_path + "/json/landing-page.json")}
+		 	before do			
+				md.execute('master')
+				`touch taskfile`
+		 	end
+			it "should merge back into work branch" do
+				task_files = capture_subprocess_io { system('ls')}.join ''
+				md.submit('finish task')		
+				`git checkout -q master`
+			 	master_files = capture_subprocess_io { system('git ls-files')}.join ''
+			 	master_files.must_match task_files		 			 	 	
+			end
+			 
+			 it "metabranch should know task was submitted" do
+			 	md.submit('finish task')
+			 	last_commit = capture_subprocess_io { system('git log --format=%B -n 1 task-meta')}.join ''
+			 	last_commit.must_match 'finish task'
+			 end
+			 
+			 it "metabranch should keep tree of files" do
+			 	md.submit('finish task')
+			 	`git checkout -q task-meta`
+			 	metabranch_files = capture_subprocess_io { system('git ls-files')}.join ''
+			 	`git checkout -q task-meta^`
+			 	metabranch_parent_files = capture_subprocess_io { system('git ls-files')}.join ''
+			 	metabranch_parent_files.must_match metabranch_files
+			 end
+			 
+			 it "task branch must be deleted" do
+			 	md.submit('finish task')
+			 	output = capture_subprocess_io { system('git branch')}.join ''
+			 	output.wont_match 'master#task-meta#landin-page'
+			 end
+		end		
+ 
+		 
+		 
 	end
 
 end

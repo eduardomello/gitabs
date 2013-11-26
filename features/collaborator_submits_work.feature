@@ -8,5 +8,13 @@ Feature: Collaborator submits work
 	and the metabranch must not have its tree altered.
 	
 	Scenario: list submit command help
-		When I run `gitabs submit help`
+		When I run `gitabs help submit`
 		Then the output should contain "Use this command to submit a finished work"
+		
+	Scenario: run submit command with 0 arguments
+		When I run `gitabs submit`
+		Then the output should contain "No value provided for required options"
+		
+	Scenario: run submit command with 1 argument
+		When I run `gitabs submit -m "this work is done"`
+		Then the output should contain "Task submitted"
