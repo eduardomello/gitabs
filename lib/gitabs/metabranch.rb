@@ -29,7 +29,7 @@ module Gitabs
 		
 		def schema
 			begin
-				checkout_if_necessary
+				checkout_if_necessary								
 				@schema ||= JSON.parse(File.read(@file))
 			rescue				
 				return nil

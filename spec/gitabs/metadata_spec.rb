@@ -40,13 +40,16 @@ describe Gitabs::Metadata do
 				proc { Gitabs::Metadata.new("john-doe", @assets_path + "/json/john-doe-required-problem.json") }.must_raise(RuntimeError)
 			end
 			it "fails if current branch is not a metabranch" do
-				system('git checkout master')
+				system('git checkout -q master')
 				proc { Gitabs::Metadata.new("jonh-doe", @assets_path + "/json/john-doe.json")}.must_raise(RuntimeError)
 			end
 			it "succeeds for a valid json file if its accepted by metabranch schema" do
 				md = Gitabs::Metadata.new("john-doe", @assets_path + "/json/john-doe.json")
 				md.data.wont_be_nil				
 			end
+		end
+		describe "load metadata" do
+			
 		end
 	end
 	
@@ -103,12 +106,13 @@ describe Gitabs::Metadata do
 			 end
 		end
 		 
-		describe "on succesful submit" do
+		describe "on successful submit" do
 			let(:md) {Gitabs::Metadata.new("landing-page", @assets_path + "/json/landing-page.json")}
 		 	before do			
 				md.execute('master')
 				`touch taskfile`
 		 	end
+		 			 	
 			it "should merge back into work branch" do
 				task_files = capture_subprocess_io { system('ls')}.join ''
 				md.submit('finish task')		

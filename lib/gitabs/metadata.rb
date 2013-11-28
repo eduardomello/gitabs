@@ -14,16 +14,20 @@ module Gitabs
 			@name = name
 			@file = file	
 			
-			load_metabranch		
+					
 			
-			if name = nil then
+			if name == nil then
 				task_branch = `git rev-parse --abbrev-ref HEAD`.strip
 				split_branch = task_branch.split('#')
-				workbranch = split_branch[0]
-				metabranch = split_branch[1]
-				@name = split_branch[2]				
+				@workbranch_name = split_branch[0]
+				@metabranch_name = split_branch[1]				
+				@name = split_branch[2]		
+				
+				load_metabranch(@metabranch_name)		
+			else
+				load_metabranch
 			end		
-			
+						
 			if file then
 				new_metadata 			
 			else
@@ -49,7 +53,7 @@ module Gitabs
 			split_branch = task_branch.split('#')
 			workbranch = split_branch[0]
 			metabranch = split_branch[1]
-			
+			puts metabranch
 			`git add .`
 			`git commit -m '#{message}'`
 			`git checkout -q #{workbranch}`
@@ -60,7 +64,7 @@ module Gitabs
 			`git update-ref -m '#{message}' refs/heads/#{metabranch} #{forgedcommit}`
 			`git checkout -q #{workbranch}`
 			`git branch -D #{task_branch}`
-			git 
+			
 		end
 		
 				
@@ -85,10 +89,10 @@ module Gitabs
 		
 		private
 		def load_metabranch
-			repo = Rugged::Repository.new('.')
-			current_branch = `git rev-parse --abbrev-ref HEAD`.strip 	
-			@metabranch = Gitabs::Metabranch.new(current_branch)
-			raise "Current branch is not a metabranch" unless @metabranch.schema
+			repo = Rugged::Repository.new('.')			
+			@metabranch_name = `git rev-parse --abbrev-ref HEAD`.strip 	unless @metabranch_name
+			@metabranch = Gitabs::Metabranch.new(@metabranch_name)			
+			raise "Provided branch is not a metabranch" unless @metabranch.schema
 		end
 		
 		def new_metadata
@@ -98,7 +102,7 @@ module Gitabs
 		end
 		
 		def load_metadata
-			raise "No metadata named '#{@name}' found" unless `git ls-files`.include?(name + '.data') 
+			raise "No metadata named '#{@name}' found" unless `git ls-files`.include?(@name + '.data') 
 			@file = @metabranch.repo.workdir + @name + ".data"
 			parse_data
 		end
