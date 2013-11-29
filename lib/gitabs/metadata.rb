@@ -10,23 +10,11 @@ module Gitabs
 		attr_reader :data
 		attr_reader :metabranch
 	
-		def initialize(name=nil, file=nil)
+		def initialize(name, file=nil)
 			@name = name
 			@file = file	
-			
-					
-			
-			if name == nil then
-				task_branch = `git rev-parse --abbrev-ref HEAD`.strip
-				split_branch = task_branch.split('#')
-				@workbranch_name = split_branch[0]
-				@metabranch_name = split_branch[1]				
-				@name = split_branch[2]		
 				
-				load_metabranch(@metabranch_name)		
-			else
-				load_metabranch
-			end		
+			load_metabranch				
 						
 			if file then
 				new_metadata 			
@@ -41,7 +29,9 @@ module Gitabs
 			
 			`git mktree </dev/null`				
 			emptycommit = `git commit-tree -p HEAD -p #{workbranch} #{workbranch}^{tree} -m 'create #{@name}'`
-			`git checkout -q -b #{workbranch}##{@metabranch.name}##{@name} #{emptycommit}`
+			`git checkout -q -b #{@name} #{emptycommit}`
+			`git tag #{@metabranch.name}.#{@name}`
+			
 		end
 		
 		def submit(message)
@@ -50,10 +40,22 @@ module Gitabs
 			raise "Nothing to commit. You should do some work first!" if branch_status.include?("nothing to commit")
 			
 			task_branch = `git rev-parse --abbrev-ref HEAD`.strip
-			split_branch = task_branch.split('#')
-			workbranch = split_branch[0]
-			metabranch = split_branch[1]
-			puts metabranch
+			tag = `git describe --tags --abbrev=0 #{task_branch}`.strip			
+			commit_hash = `git show #{tag} --format=%H`.strip
+			commit = @metabranch.repo.lookup(commit_hash)
+			
+			workbranch = ''
+			metabranch = ''
+			commit.parents.each do |c|				
+				branch = `git branch --contains #{c.oid}`.gsub(/\n|\*|#{Regexp.escape(task_branch)}/,'').strip
+				
+				if Gitabs::Metabranch.new(branch).schema then
+					metabranch = branch 			
+				else
+					workbranch = branch
+				end
+			end
+			
 			`git add .`
 			`git commit -m '#{message}'`
 			`git checkout -q #{workbranch}`

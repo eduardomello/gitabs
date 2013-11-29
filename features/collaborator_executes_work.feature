@@ -28,7 +28,7 @@ Feature: Collaborator executes work
 		Given I am on a directory with a git repository
 		And the current branch is not 'task-meta'	
 		When I run `gitabs execute landing-page -w master`
-		Then the output should contain "Current branch is not a metabranch"
+		Then the output should contain "Provided branch is not a metabranch"
 	
 	@task-meta			
 	Scenario: run execute but no branch exists for -w flag

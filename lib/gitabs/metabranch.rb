@@ -58,7 +58,7 @@ module Gitabs
 			#for further explanation
 			`git mktree </dev/null`				
 			emptycommit = `git commit-tree -p master 4b825dc -m 'create metabranch' </dev/null`
-			`git checkout -q -b #{@name} #{emptycommit}`
+			`git checkout -q --orphan #{@name} #{emptycommit}`
 		end
 		
 		def commit_json_schema

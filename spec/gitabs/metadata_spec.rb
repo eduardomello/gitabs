@@ -62,23 +62,49 @@ describe Gitabs::Metadata do
 			proc { md.execute('void-branch')}.must_raise(RuntimeError)
 		end
 		
-		it "succeeds if work branch exists" do
-			md = Gitabs::Metadata.new("landing-page", @assets_path + "/json/landing-page.json")
-			md.execute('master')
-			output = capture_subprocess_io { system('git rev-parse --abbrev-ref HEAD')}.join ''
-			output.must_match 'master#task-meta#landing-page'
-
-			parent_list 	= capture_subprocess_io { system('git rev-list --parents -n 1 HEAD')}.join ''
-			master_hash 	= capture_subprocess_io { system('git show-ref --hash master')}.join ''
-			metabranch_hash	= md.metabranch.branch.tip.oid
+		describe "succeeds if work branch exists" do
+			let(:md) { Gitabs::Metadata.new("landing-page", @assets_path + "/json/landing-page.json") }
+			before(:each) do
+				md.execute('master')
+			end
 			
-			parent_list.must_match master_hash
-			parent_list.must_match metabranch_hash
+			it "should create a branch after the metadata" do
+				output = capture_subprocess_io { system('git rev-parse --abbrev-ref HEAD')}.join ''
+				output.must_match 'landing-page'
+			end
 
-			task_files = capture_subprocess_io { system('git ls-files')}.join ''			
-			system('git checkout -q master')
-			master_files = capture_subprocess_io { system('git ls-files')}.join ''
-			task_files.must_match master_files			
+			it "should have the metabranch as parent" do
+				parent_list 	= capture_subprocess_io { system('git rev-list --parents -n 1 HEAD')}.join ''				
+				metabranch_hash	= md.metabranch.branch.tip.oid
+							
+				parent_list.must_match metabranch_hash
+			end
+			
+			it "should have the work branch as parent" do
+				parent_list = capture_subprocess_io { system('git rev-list --parents -n 1 HEAD')}.join ''
+				master_hash = capture_subprocess_io { system('git show-ref --hash master')}.join ''
+				
+				parent_list.must_match master_hash
+			end
+			 
+			it "should have the files from work branch" do
+				task_files = capture_subprocess_io { system('git ls-files')}.join ''			
+				system('git checkout -q master')
+				master_files = capture_subprocess_io { system('git ls-files')}.join ''
+				task_files.must_match master_files	
+			end
+			
+			it "shouldn't have files from metabranch" do
+				task_files = capture_subprocess_io { system('git ls-files')}.join ''			
+				system('git checkout -q task-meta')
+				metabranch_files = capture_subprocess_io { system('git ls-files')}.join ''
+				task_files.wont_match metabranch_files
+			end	
+			
+			it "should have a tag after metadata point to its HEAD" do
+				output = capture_subprocess_io { system('git describe --tags --abbrev=0 landing-page')}.join ''
+				output.must_match "task-meta.landing-page"	
+			end	
 			
 		end
 	end
