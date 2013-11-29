@@ -1,10 +1,10 @@
 require 'gitabs'
-require 'gitabs/git_controller'
+require 'gitabs/task_controller'
 require 'rugged'
 
 module Gitabs
 	class Task	
-		include GitController
+		include TaskController
 		attr_reader :metadata
 		
 		def initialize(metadata=nil)	
@@ -15,29 +15,30 @@ module Gitabs
 			else
 				load_metadata
 			end
-			raise "Invalid metadata" unless metadata.kind_of? Metadata
+			raise "Invalid metadata" unless @metadata.is_a?(Gitabs::Metadata) && @metadata.data
 								
 		end
 	
 		def execute(workbranch)			
 			raise 'work branch not found' unless is_branch?(workbranch)			
-			create_workbranch(workbranch)			
+			create_taskbranch(workbranch)			
 		end
 		
 		def submit(message)
 			raise "No message provided" if message.strip.empty?	
 			branch_status = status
-			raise "Nothing to commit. You should do some work first!" if branch_status.include?("nothing to commit")
-						
+			raise "Nothing to commit. You should do some work first!" if branch_status.include?("nothing to commit")						
 			commit_task(message)			
 		end
 		
 		private
 		def load_metadata			
-			load_tag(metabranch_ref, metadata_name)
+			taskbranch_ref = current_branch	
+			metabranch_ref = tag_metabranch
+			metadata_name = tag_metadata				
 			checkout(metabranch_ref)
-			@metadata = Gitabs::Metadata.new(metadata_name)
-			checkout(task_branch)
+			@metadata = Gitabs::Metadata.new(metadata_name)			
+			checkout(taskbranch_ref)
 		end		
 	end
 end

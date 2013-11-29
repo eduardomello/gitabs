@@ -28,9 +28,27 @@ describe Gitabs::Task do
 					`git commit -m 'foo commit'`	
 				}
 				proc { Gitabs::Task.new('wrong')}.must_raise(RuntimeError)
-			end
-									
+			end									
 		end		
+		describe "successful load situations" do
+			it "should load if no metadata is provided" do
+				capture_io {
+					`git init`
+					`touch dummy`
+					`git add .`
+					`git commit -m 'dummy commit'`
+					`touch foo`
+					`git add .`
+					`git commit -m 'foo commit'`	
+				}
+				Gitabs::Metabranch.new('task-meta', @assets_path + '/json-schema/task-schema.json')
+				md = Gitabs::Metadata.new("landing-page", @assets_path + "/json/landing-page.json")
+				Gitabs::Task.new(md).execute('master')
+				
+				task = Gitabs::Task.new
+				task.metadata.name.must_match "landing-page"
+			end
+		end
 	end
 	describe "#execute" do
 		before(:each) do

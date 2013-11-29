@@ -1,9 +1,9 @@
-require 'gitabs'
+require 'gitabs/metabranch_controller'
 require 'json'
 
 module Gitabs
 	class Metabranch
-	
+		include MetabranchController
 		attr_reader :branch
 		attr_reader :repo
 		attr_reader :name
@@ -12,8 +12,8 @@ module Gitabs
 		def initialize(name, file=nil)
 			@name = name
 			@file = file
-			@repo = Rugged::Repository.new('.')					
-			@branch = Rugged::Branch.lookup(@repo, @name)				
+			@repo = load_repo					
+			@branch = load_branch				
 			
 			create_new_metabranch if @branch == nil && @file && valid? 
 			if @branch then
@@ -40,36 +40,7 @@ module Gitabs
 			(@branch.tip.tree.count - 1)
 		end
 		
-		private 
-		def checkout_if_necessary
-			`git checkout -q #{@name}` if `git rev-parse --abbrev-ref HEAD`.strip != @name && @branch
-		end
-		
-		def create_new_metabranch
-			create_empty_branch
-			commit_json_schema
-						
-			@branch = Rugged::Branch.lookup(@repo, @name)
-			
-		end
-		
-		def create_empty_branch
-			#see http://stackoverflow.com/questions/19181665/git-rebase-onto-results-on-single-commit
-			#for further explanation
-			`git mktree </dev/null`				
-			emptycommit = `git commit-tree -p master 4b825dc -m 'create metabranch' </dev/null`
-			`git checkout -q --orphan #{@name} #{emptycommit}`
-		end
-		
-		def commit_json_schema
-			file_path = Dir.pwd + '/' + @name + '.schema'
-			FileUtils.cp(@file, file_path)			
-			@file = file_path
-			`git add #{@name}.schema`
-			`git commit -m 'define metabranch schema'`	
-			`git clean -f -d`
-		end
-		
+		private		
 		def load_file
 			@file = @repo.workdir + @name + '.schema'
 		end
