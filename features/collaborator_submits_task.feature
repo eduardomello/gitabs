@@ -14,8 +14,13 @@ Feature: Collaborator submits task
 	Scenario: run submit command with 0 arguments
 		When I run `gitabs submit`
 		Then the output should contain "No value provided for required options"
+	
+	@execute-task
+	Scenario: run submit command with nothing to commit
+		When I run `gitabs submit -m "this work is done"`
+		Then the output should contain "Nothing to commit"
 
-	@execute-task	
+	@ready-to-submit	
 	Scenario: run submit command with 1 argument
 		When I run `gitabs submit -m "this work is done"`
 		Then the output should contain "Task submitted"
