@@ -1,10 +1,10 @@
 module Gitabs
-	class GitController
+	module GitController
 		def checkout(branch)
 			`git checkout -q #{branch}`
 		end
 		
-		def branch?(branch)
+		def is_branch?(branch)
 			`git branch`.include?(branch)
 		end
 		
@@ -51,22 +51,22 @@ module Gitabs
 			commit_hash = `git show #{tag} --format=%H`.strip
 		end
 		
-		def get_first_commit(metadata)
+		def get_first_commit
 			commit_hash = get_tagged_commit
-			commit = metadata.metabranch.repo.lookup(commit_hash)
+			commit = @metadata.metabranch.repo.lookup(commit_hash)
 		end
 		
-		def execute(metadata, workbranch)
+		def create_workbranch(workbranch)
 			`git mktree </dev/null`				
-			emptycommit = `git commit-tree -p HEAD -p #{workbranch} #{workbranch}^{tree} -m 'create task branch for #{metadata.metabranch.name}.#{metadata.name}'`
-			`git checkout -q -b #{metadata.name} #{emptycommit}`
-			`git tag #{metadata.metabranch.name}.#{metadata.name}`
+			emptycommit = `git commit-tree -p HEAD -p #{workbranch} #{workbranch}^{tree} -m 'create task branch for #{@metadata.metabranch.name}.#{@metadata.name}'`
+			`git checkout -q -b #{@metadata.name} #{emptycommit}`
+			`git tag #{@metadata.metabranch.name}.#{@metadata.name}`
 		end
 			
-		def submit(task, message)	
-			commit = get_first_commit(task.metadata)
+		def commit_task(message)	
+			commit = get_first_commit
 			tag = load_tag
-			taskbranch = current_branch()
+			taskbranch = current_branch
 			workbranch = ''
 			metabranch = ''
 			commit.parents.each do |c|				
