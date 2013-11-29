@@ -23,51 +23,7 @@ module Gitabs
 			end
 		end
 		
-		def execute(workbranch)
-			load_metabranch
-			raise 'work branch not found' unless `git branch`.include?(workbranch)
-			
-			`git mktree </dev/null`				
-			emptycommit = `git commit-tree -p HEAD -p #{workbranch} #{workbranch}^{tree} -m 'create #{@name}'`
-			`git checkout -q -b #{@name} #{emptycommit}`
-			`git tag #{@metabranch.name}.#{@name}`
-			
-		end
 		
-		def submit(message)
-			raise "No message provided" if message.strip.empty?	
-			branch_status = `git status`
-			raise "Nothing to commit. You should do some work first!" if branch_status.include?("nothing to commit")
-			
-			task_branch = `git rev-parse --abbrev-ref HEAD`.strip
-			tag = `git describe --tags --abbrev=0 #{task_branch}`.strip			
-			commit_hash = `git show #{tag} --format=%H`.strip
-			commit = @metabranch.repo.lookup(commit_hash)
-			
-			workbranch = ''
-			metabranch = ''
-			commit.parents.each do |c|				
-				branch = `git branch --contains #{c.oid}`.gsub(/\n|\*|#{Regexp.escape(task_branch)}/,'').strip
-				
-				if Gitabs::Metabranch.new(branch).schema then
-					metabranch = branch 			
-				else
-					workbranch = branch
-				end
-			end
-			
-			`git add .`
-			`git commit -m '#{message}'`
-			`git checkout -q #{workbranch}`
-			`git merge #{task_branch}`
-			`git checkout -q #{task_branch}`
-
-			forgedcommit = `git commit-tree  -p #{metabranch} -p #{workbranch} #{metabranch}^{tree} -m '#{message}'`
-			`git update-ref -m '#{message}' refs/heads/#{metabranch} #{forgedcommit}`
-			`git checkout -q #{workbranch}`
-			`git branch -D #{task_branch}`
-			
-		end
 		
 				
 		def valid_json?			

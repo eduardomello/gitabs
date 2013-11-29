@@ -1,6 +1,7 @@
 require 'gitabs'
 require 'gitabs/metabranch'
 require 'gitabs/metadata'
+require 'gitabs/task'
 require 'thor'
 
 class Gitabs::CLI < Thor
@@ -42,7 +43,8 @@ class Gitabs::CLI < Thor
 	def execute(metadata)
 		begin
 			md = Gitabs::Metadata.new(metadata)
-			md.execute(options[:workbranch])
+			task = Gitabs::Task.new(md)
+			task.execute(options[:workbranch])
 		rescue => e
 			puts e.message
 		else
@@ -57,9 +59,9 @@ class Gitabs::CLI < Thor
 		   :desc => "message detailing your finished work",
 		   :required => true
 	def submit
-		begin
-			md = Gitabs::Metadata.new
-			md.submit(options[:message])
+		begin			
+			task = Gitabs::Task.new
+			task.submit(options[:message])
 		rescue => e
 			puts e.message
 		else

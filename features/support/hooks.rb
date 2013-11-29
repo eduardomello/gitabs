@@ -40,7 +40,5 @@ Before ('@execute-task') do
 	`gitabs metabranch task-meta -f #{@assets_path}/json-schema/task-schema.json`
 	`gitabs metadata landing-page -f #{@assets_path}/json/landing-page.json`
 	`gitabs execute landing-page -w master`
-	`touch workfile`
-	`gitabs submit -m "task is done"`
-	
+	`touch workfile`		
 end
