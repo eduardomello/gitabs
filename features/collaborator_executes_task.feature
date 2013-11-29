@@ -1,8 +1,8 @@
 
-Feature: Collaborator executes work
+Feature: Collaborator executes task
 
 	A collaborator must be able to select a metadata, on a metabranch, and
-	relate it to a work branch in order to execute a new work.
+	relate it to a work branch in order to execute a new task.
 	
 	This operation must result on a third branch, with both the selected 
 	metabranch and work branch as parents. It's tree object must list the 

@@ -10,7 +10,8 @@ Feature: Project Manager creates a meta-branch
 	When a metabranch was just created, gitabs manipulate the commit history
 	in order to have a single file: the json-schema provided in its creation.
 	
-	
+	The json schema will be renamed to the metabranch name and its extension
+	changed to .schema in order to indetify it.
 	
 	Scenario: list metabranch command help
 		When I run `gitabs help metabranch`

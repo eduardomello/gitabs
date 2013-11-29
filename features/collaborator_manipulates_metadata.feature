@@ -1,17 +1,17 @@
 
 Feature: Collaborator manipulates metadata
 
-	A collaborating peer in the project must be able to manipulate metadata
-	in a certain metabranch so he may document the project.
+	A collaborator must be able to manipulate metadata in a certain
+	 metabranch so he may register information on the project.
 	
 	To create a metadata, there must be a previous metabranch created
-	and there must be a json valid file under the schema of that metabranch.
-	The input file will be renamed after the provided name argument. Also, it will
-	have its extension as .data, to difference the .schema extension.
-	The user must be checked out on the target metabranch.
-	
-	To load a metadata, the user must be checkout on the target metabranch and gitabs
-	will try to load a file after the name argument provided.
+	and there must be a json schema-valid file for that metabranch.
+	The input file will be renamed after the provided name argument. 
+	Also, it will have its extension as .data, to difference the .schema 
+	extension.
+
+	To load a metadata, the user must be checkout on the target metabranch 
+	and gitabs will try to load a file after the name argument provided.
 	
 	Scenario: list metadata command help
 		When I run `gitabs help metadata`

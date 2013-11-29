@@ -67,6 +67,7 @@ describe Gitabs::Metabranch do
 			it "should be parentless" do
 				mb = Gitabs::Metabranch.new('users-meta', @assets_path + '/json-schema/user-schema.json')
 				mb.branch.tip.parents.count.must_equal 0
+
 			end
 			
 			it "should have its json-schema file on head commit" do
