@@ -1,0 +1,93 @@
+module Gitabs
+	class GitController
+		def checkout(branch)
+			`git checkout -q #{branch}`
+		end
+		
+		def branch?(branch)
+			`git branch`.include?(branch)
+		end
+		
+		def status
+			`git status`
+		end
+		
+		def is_repo?
+			begin
+				Rugged::Repository.new('.') #this raise RepositoryError if not on a repo
+			rescue
+				return false
+			end
+			true
+		end
+		
+		def current_branch
+			`git rev-parse --abbrev-ref HEAD`.strip
+		end
+		
+		def load_tag
+			taskbranch = current_branch
+			tag = `git describe --tags --abbrev=0 #{taskbranch}`.strip	
+		end
+		
+		def split_tag
+			tag = load_tag			
+			raise "Not on a task branch." if tag.include?("No names found")
+			tag_split = tag.split('.')
+		end
+		
+		def tag_metabranch
+			tag_split = load_tag
+			tag_split[0]			
+		end
+		
+		def tag_metadata
+			tag_split = load_tag
+			tag_split[1]
+		end
+		
+		def get_tagged_commit
+			tag = load_tag		
+			commit_hash = `git show #{tag} --format=%H`.strip
+		end
+		
+		def get_first_commit(metadata)
+			commit_hash = get_tagged_commit
+			commit = metadata.metabranch.repo.lookup(commit_hash)
+		end
+		
+		def execute(metadata, workbranch)
+			`git mktree </dev/null`				
+			emptycommit = `git commit-tree -p HEAD -p #{workbranch} #{workbranch}^{tree} -m 'create task branch for #{metadata.metabranch.name}.#{metadata.name}'`
+			`git checkout -q -b #{metadata.name} #{emptycommit}`
+			`git tag #{metadata.metabranch.name}.#{metadata.name}`
+		end
+			
+		def submit(task, message)	
+			commit = get_first_commit(task.metadata)
+			tag = load_tag
+			taskbranch = current_branch()
+			workbranch = ''
+			metabranch = ''
+			commit.parents.each do |c|				
+				branch = `git branch --contains #{c.oid}`.gsub(/\n|\*|#{Regexp.escape(taskbranch)}/,'').strip
+				if Gitabs::Metabranch.new(branch).schema then
+					metabranch = branch 			
+				else
+					workbranch = branch
+				end
+			end
+			
+			`git add .`
+			`git commit -m '#{message}'`
+			`git checkout -q #{workbranch}`
+			`git merge #{taskbranch}`
+			`git checkout -q #{taskbranch}`
+			forgedcommit = `git commit-tree  -p #{metabranch} -p #{workbranch} #{metabranch}^{tree} -m '#{message}'`
+			`git update-ref -m '#{message}' refs/heads/#{metabranch} #{forgedcommit}`
+			`git checkout -q #{workbranch}`
+			`git branch -D #{taskbranch}`
+			`git tag -d #{tag}`
+		end
+	end
+end

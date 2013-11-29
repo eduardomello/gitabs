@@ -9,22 +9,13 @@ describe Gitabs::Task do
 
 		@directory = Dir.mktmpdir('temp-repo')
 		@orig_directory = Dir.pwd
-		Dir.chdir(@directory)
-#		capture_io {
-#			`git init`
-#			`touch dummy`
-#			`git add .`
-#			`git commit -m 'dummy commit'`
-#			`touch foo`
-#			`git add .`
-#			`git commit -m 'foo commit'`	
-#		}						
+		Dir.chdir(@directory)					
 	end
 
 	describe "#initialize" do
 		describe "failure situations" do			
 			it "should be on a repository" do
-				proc { Gitabs::Task.new(nil) }.must_raise(Rugged::RepositoryError)
+				proc { Gitabs::Task.new(nil) }.must_raise(RuntimeError)
 			end				
 			it "should fail with invalid metadata" do
 				capture_io {
