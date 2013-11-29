@@ -5,7 +5,7 @@ require 'rugged'
 
 module Gitabs
 	class Metadata
-	
+		include GitController
 		attr_reader :name
 		attr_reader :data
 		attr_reader :metabranch
@@ -22,10 +22,7 @@ module Gitabs
 				load_metadata
 			end
 		end
-		
-		
-		
-				
+						
 		def valid_json?			
     		begin        		
 				json_contents = File.read(@file)        		
@@ -46,9 +43,8 @@ module Gitabs
         end    
 		
 		private
-		def load_metabranch
-			repo = Rugged::Repository.new('.')			
-			@metabranch_name = `git rev-parse --abbrev-ref HEAD`.strip 	unless @metabranch_name
+		def load_metabranch						
+			@metabranch_name = current_branch unless @metabranch_name
 			@metabranch = Gitabs::Metabranch.new(@metabranch_name)			
 			raise "Provided branch is not a metabranch" unless @metabranch.schema
 		end
@@ -60,7 +56,7 @@ module Gitabs
 		end
 		
 		def load_metadata
-			raise "No metadata named '#{@name}' found" unless `git ls-files`.include?(@name + '.data') 
+			raise "No metadata named '#{@name}' found" unless include_file?(@name + '.data') 
 			@file = @metabranch.repo.workdir + @name + ".data"
 			parse_data
 		end
@@ -69,8 +65,7 @@ module Gitabs
 			file_path = @metabranch.repo.workdir + @name + '.data'
 			FileUtils.cp(@file, file_path)			
 			@file = file_path
-			`git add #{@name}.data`
-			`git commit -m 'add metadata #{@name}'`	
+			commit_metadata
 		end
 		
 		def parse_data

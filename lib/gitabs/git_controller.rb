@@ -12,13 +12,26 @@ module Gitabs
 			`git status`
 		end
 		
+		def load_repo
+			Rugged::Repository.new('.')
+		end
+		
 		def is_repo?
 			begin
-				Rugged::Repository.new('.') #this raise RepositoryError if not on a repo
+				load_repo
 			rescue
 				return false
 			end
 			true
+		end
+		
+		def commit_metadata
+			`git add #{@name}.data`
+			`git commit -m 'add metadata #{@name}'`	
+		end
+		
+		def include_file?(file)
+			`git ls-files`.include?(file)
 		end
 		
 		def current_branch
