@@ -1,4 +1,3 @@
-
 Feature: Collaborator manipulates metadata
 
 	A collaborator must be able to manipulate metadata in a certain
@@ -10,9 +9,6 @@ Feature: Collaborator manipulates metadata
 	Also, it will have its extension as .data, to difference the .schema 
 	extension.
 
-	To load a metadata, the user must be checkout on the target metabranch 
-	and gitabs will try to load a file after the name argument provided.
-	
 	Scenario: list metadata command help
 		When I run `gitabs help metadata`
 		Then the output should contain "Use this command to add metadata in a certain metabranch"
