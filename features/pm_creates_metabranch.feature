@@ -1,4 +1,3 @@
-
 Feature: Project Manager creates a meta-branch
 	
 	A project manager must be able to create a metabranch on some 
@@ -6,6 +5,8 @@ Feature: Project Manager creates a meta-branch
 	
 	To create a metabranch you need to provide a valid json-schema file
 	which will validate future metadata. 
+	
+	A metabranch shouldn't have any parent commits from other branches.
 	
 	When a metabranch was just created, gitabs manipulate the commit history
 	in order to have a single file: the json-schema provided in its creation.
