@@ -1,5 +1,5 @@
 module Gitabs
-	module GitController
+	module GitMapper
 		
 		private
 		def load_repo

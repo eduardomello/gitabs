@@ -1,6 +1,7 @@
+require 'gitabs/git_mapper'
 module Gitabs
-	module TaskController
-		include GitController
+	module TaskMapper
+		include GitMapper
 		
 		private
 		def checkout(branch)

@@ -1,7 +1,7 @@
-require 'gitabs/git_controller'
+require 'gitabs/git_mapper'
 module Gitabs
-	module MetabranchController
-		include GitController
+	module MetabranchMapper
+		include GitMapper
 		
 		private
 		def load_branch

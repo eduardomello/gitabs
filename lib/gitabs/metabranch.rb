@@ -1,9 +1,9 @@
-require 'gitabs/metabranch_controller'
+require 'gitabs/metabranch_mapper'
 require 'json'
 
 module Gitabs
 	class Metabranch
-		include MetabranchController
+		include MetabranchMapper
 		attr_reader :branch
 		attr_reader :repo
 		attr_reader :name

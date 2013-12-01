@@ -1,7 +1,7 @@
-require 'gitabs'
+require 'gitabs/git_mapper'
 module Gitabs
-	module MetadataController
-		include GitController
+	module MetadataMapper
+		include GitMapper
 		
 		private
 		def commit_metadata

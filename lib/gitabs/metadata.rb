@@ -1,12 +1,12 @@
 require 'gitabs'
-require 'gitabs/metadata_controller'
+require 'gitabs/metadata_mapper'
 require 'json'
 require 'json-schema'
 require 'rugged'
 
 module Gitabs
 	class Metadata
-		include MetadataController
+		include MetadataMapper
 		attr_reader :name
 		attr_reader :data
 		attr_reader :metabranch
