@@ -1,4 +1,4 @@
-Feature: Project Manager creates a meta-branch
+Feature: Project Manager manipulates a meta-branch
 	
 	A project manager must be able to create a metabranch on some 
 	repository so he can start storing metadata on it.
